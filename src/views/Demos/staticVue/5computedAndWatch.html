@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelloVue</title>
+  <script src="./vue.js"></script>
+</head>
+
+<body>
+
+  <div id="app">
+    
+    <h2>多次调用</h2>
+<ul>
+  <li v-for="i in 3">{{value1}}</li>
+</ul>
+    
+  </div>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message:'hello vue!'
+        
+      },
+      computed:{
+        value1(){
+          console.log('value 执行了！')
+return this.message.
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

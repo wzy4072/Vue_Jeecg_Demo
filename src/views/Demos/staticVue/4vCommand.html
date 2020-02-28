@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vCommand</title>
+    <script src="./vue.js"></script>
+    <style>
+        .red {
+            color: red;
+        }
+
+        .weight {
+            font-weight: 600;
+        }
+
+        .f-s-24 {
+            font-size: 24px;
+        }
+
+        .active {
+            color: aqua;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+
+        <h2> v-if </h2>
+        <div v-if="isTrue">v-if isTrue :{{isTrue}}</div>
+        <button @click="isTrue = !isTrue">TOGGLE IS TRUE</button> <span>isTrue value:{{isTrue}}</span>
+
+        <h4 v-if="num == 1">step one!</h4>
+        <h4 v-else-if="num == 2">step two!</h4>
+        <h4 v-else>step three!</h4>
+
+        <button @click="num < 3 ? num ++ : (num =1)">CHANGE NUM</button>
+        <hr>
+
+        <h2> v-show </h2>
+        <div v-show="isShow">v-show isShow :{{isShow}}</div>
+        <button @click="isShow = !isShow">TOGGLE IS TRUE</button> <span>isShow value:{{isShow}}</span>
+
+        <hr>
+        <h2> v-for </h2>
+        <ul>
+            <li v-for="v in 3">
+                {{ v }}
+            </li>
+        </ul>
+        <br>
+        <ul>
+            <li v-for="(item,index) in items">
+                {{index}}:{{ item.message }}
+            </li>
+        </ul>
+        <br>
+        <ul>
+            <li v-for="(value,key) in userInfo">
+                {{ key }}:{{value}}
+            </li>
+        </ul>
+
+        <h2>v-bind</h2>
+        <!-- 含参指令 -->
+        <div v-bind:id="bindInfo.id">class text ID</div>
+        <div v-bind:name="bindInfo.name">class text NAME</div>
+        <div v-bind:title="'这是一句提示语'">class text title2</div>
+        <div title='这是第二句句提示语'>class tex2 title2</div>
+        <!-- 简写 -->
+        <a :href="bdHref">百度一下</a>
+
+
+        <div v-bind:class="['red','weight',fSize]">class text</div>
+        <div v-bind:class="{ active: isActive ,fSize:true}">class text</div>
+        <!-- v-bind:class v-bind:style 有多种写法，请查看官方文档“Class 与 Style 绑定”章节-->
+
+        <h2>v-on</h2>
+
+        <h4>button value:{{btnValue}}</h4>
+        <button @click="btnValue++">TOGGLE btnValue ++ </button>
+        <button v-on:click="btnValue--">TOGGLE btnValue -- </button>
+        <br>
+        <button v-on:click="say('hi')">Say hi</button>
+        <br>
+        <button v-on:click="warn('Form cannot be submitted yet.', $event)">
+            Submit
+        </button>
+        <!-- 除了click，keyup keydown mousemove change check selected 等事件可根据实际情况绑定，
+            请查看官方文档“事件处理”章节-->
+        <!-- 自定义修饰符：自行拓展 -->
+        <!-- v-on:submit.prevent -->
+        <!-- 动态参数：自行拓展 -->
+        <!-- <h2> <a v-bind:[attributeName]="url"> ... </a> </h2> -->
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                isTrue: true,
+                isShow: true,
+                num: 1,
+                items: [{
+                        id: 1,
+                        message: 'hello'
+                    },
+                    {
+                        id: 2,
+                        message: 'vue'
+                    },
+                    {
+                        id: 3,
+                        message: 'welcome'
+                    },
+
+                ],
+                userInfo: {
+                    name: 'tom',
+                    age: 16,
+                    class: 5,
+                    grade: 1
+                },
+                fSize: 'f-s-24',
+                bdHref: 'www.baidu.com',
+                isActive: true,
+                bindInfo: {
+                    id: 'bd-info',
+                    name: 'bd-name'
+                },
+                attributeName: 'href',
+                btnValue: 0
+            },
+            methods: {
+                say: function (message) {
+                    alert(message)
+                },
+                warn: function (message, event) {
+                    if (event) {
+                        console.log(event)
+                        event.preventDefault()
+                    }
+                    alert(message)
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>

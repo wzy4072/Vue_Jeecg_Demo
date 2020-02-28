@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>template</title>
+    <script src="./vue.js"></script>
+    <style>
+        .c-name {
+            color: #fc1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="app">
+        <!-- 表达式 -->
+        <span> Message: {{ msg }}</span>
+        <!-- html -->
+        <span v-html="rawHtml"></span>
+        <!-- 属性绑定 -->
+        <div v-bind:id="dynamicId"></div>
+        <!-- 表达式 -->
+        <h4>{{ number + 1 }}</h4>
+        <h4> {{ ok ? 'YES' : 'NO' }}</h4>
+        <h4>{{ message.split('').reverse().join('') }}</h4>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                msg: 'template',
+                rawHtml: '<div class="c-name"> hello rawHtml</div>',
+                dynamicId:'app-name',
+                number:665,
+                ok:true,
+                message:'武汉加油！中国加油！'
+            }
+        })
+    </script>
+
+</body>
+
+</html>
