@@ -95,7 +95,12 @@ const duplicateCheck = (params)=>getAction("/sys/duplicate/check",params);
 // 加载分类字典
 const loadCategoryData = (params)=>getAction("/sys/category/loadAllData",params);
 
+const demoUserInfo = (params)=>getAction("/demos/userinfo",params);
+
+
+
 export {
+  demoUserInfo,
   // imgView,
   // doMian,
   addRole,

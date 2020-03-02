@@ -1,0 +1,11 @@
+{
+    "success": true,
+    "message": "成功",
+    "code": 200,
+    "result": {
+        "name": "stephon",
+        "age": 20,
+        "className": "高三"
+    },
+    "timestamp": 1582869366053
+}

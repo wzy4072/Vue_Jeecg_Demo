@@ -1,41 +1,30 @@
 <template>
-  <div style="border:1px solid #ccc;">
-    <a-input v-model="baseInfo.name" style="width:200px;"></a-input>
-    <a-button @click="emitResult()">emit to parent</a-button>
+  <div class="ant-card ant-card-bordered" style="width: 400px; display:inline-block;margin:30px;vertical-align: top;" >
+    <div class="ant-card-head">
+      <div class="ant-card-head-wrapper">
+        <div class="ant-card-head-title">{{title}}</div>
+      </div>
+    </div>
+    <div class="ant-card-body">
+      <slot></slot>
+    </div>
   </div>
 </template>
+
 <script>
 export default {
   props: {
-    id: {
-      type: [String, Number],
-      required: true
+    title: {
+      type: String,
+      default: "卡片标题"
     }
   },
   data() {
-    return {
-      baseInfo: {
-        name: null
-      }
-    };
+    return {};
   },
-  created() {
-    this.baseInfo = this.getBaseInfoById();
-  },
-  methods: {
-    // 模拟后台请求返回值
-    getBaseInfoById() {
-      return {
-        name: "tom"
-      };
-    },
-    emitResult() {
-      this.$emit("getData666", this.baseInfo);
-    }
-  }
+  mounted() {},
+  methods: {}
 };
 </script>
-
 <style scoped>
-@import "./demo.css";
 </style>

@@ -54,6 +54,7 @@ module.exports = {
 
   devServer: {
     port: port,
+    open: true,
     proxy: {
       // '/api': {
       //   target: `http://localhost:${port}/mock`, //mock API接口系统
@@ -78,8 +79,13 @@ module.exports = {
       //   changeOrigin: true
       // },
     },
+    overlay: {
+      warnings: false,
+      errors: true
+    },
     // after: require('./mock/mock-server.js')
+
   },
 
-  lintOnSave: undefined
+  lintOnSave: false
 }

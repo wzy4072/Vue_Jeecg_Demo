@@ -7,29 +7,52 @@
   <title>HelloVue</title>
   <script src="./vue.js"></script>
 </head>
+<style>
+  .btn {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    text-align: center;
+    color: #333;
+    display: inline-block;
+    margin: 8px;
+    cursor: pointer;
+  }
+
+  .active {
+    border-color: limegreen;
+    color: limegreen;
+  }
+</style>
 
 <body>
 
   <div id="app">
-    
-    <h2>多次调用</h2>
-<ul>
-  <li v-for="i in 3">{{value1}}</li>
-</ul>
-    
+
+    <div>
+      <div class="btn" :class="{active:v==num}" v-for="v in 5" @click="num = v">{{v}}</div>
+    </div>
+    <br>
+
+    <table>
+      <tr v-for="row in rows"></tr>
+    </table>
+
+    {{message}}
   </div>
 
   <script>
     var app = new Vue({
       el: '#app',
       data: {
-        message:'hello vue!'
-        
+        num: 0,
+        message: 'hello'
       },
-      computed:{
-        value1(){
-          console.log('value 执行了！')
-return this.message.
+      computed: {
+        valueA() {
+          return (this.num + 20) * 4 * 2 + 20;
         }
       }
     })
