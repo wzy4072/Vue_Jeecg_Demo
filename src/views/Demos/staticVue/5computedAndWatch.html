@@ -36,11 +36,18 @@
     </div>
     <br>
 
-    <table>
-      <tr v-for="row in rows"></tr>
-    </table>
+    <ul>
+      <li v-for="i in 3">{{valueA}}</li>
+    </ul>
+    <ul>
+      <li v-for="i in 3">{{getValueB()}}</li>
+    </ul>
 
-    {{message}}
+    <!-- - computed: 运算复杂 多次调用 多个依赖
+- watch: 单一依赖
+- method: 针对性
+- 表达式：简单计算
+- 自定义修饰符：特定常用事件（了解） -->
   </div>
 
   <script>
@@ -48,11 +55,27 @@
       el: '#app',
       data: {
         num: 0,
-        message: 'hello'
+        num2:1,
+        num3:3
       },
       computed: {
         valueA() {
+          // 一个非常复杂的计算
+          console.log('valueA')
+
           return (this.num + 20) * 4 * 2 + 20;
+        }
+      },
+      watch:{
+        num(nv,ov){
+          // do some thing
+          console.log(`newvalue${nv},oldValue${ov}`)
+        }
+      },
+      methods:{
+        getValueB(){
+          console.log('getValueB')
+          return this.num+66;
         }
       }
     })

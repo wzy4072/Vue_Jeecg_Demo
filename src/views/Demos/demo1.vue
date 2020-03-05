@@ -1,26 +1,50 @@
 <template>
-  <div>
-    <a-form layout="inline" :form="form" @submit="handleSubmit">
-      <a-form-item label="Note" :label-col="{ span: 5 }" :wrapper-col="{ span: 12 }">
-        <a-input
-          v-decorator="['note', { rules: [{ required: true, message: 'Please input your note!' }] }]"
-        />
-      </a-form-item>
-    </a-form>
-  </div>
+  <a-cascader :options="options" @change="onChange" placeholder="Please select" />
 </template>
-
 <script>
-export default {
-  data() {
-    return {
-      form: this.$form.createForm(this, {}),
-      
-    };
-  },
-  mounted() {},
-  methods: {}
-};
+  export default {
+    data() {
+      return {
+        options: [
+          {
+            value: 'zhejiang',
+            label: 'Zhejiang',
+            children: [
+              {
+                value: 'hangzhou',
+                label: 'Hangzhou',
+                children: [
+                  {
+                    value: 'xihu',
+                    label: 'West Lake',
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            value: 'jiangsu',
+            label: 'Jiangsu',
+            children: [
+              {
+                value: 'nanjing',
+                label: 'Nanjing',
+                children: [
+                  {
+                    value: 'zhonghuamen',
+                    label: 'Zhong Hua Men',
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+    },
+    methods: {
+      onChange(value) {
+        console.log(value);
+      },
+    },
+  };
 </script>
-<style scoped>
-</style>

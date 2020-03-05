@@ -212,7 +212,15 @@
                 },
                 "name": "task",
                 "id": "baf16b7174bd821b6bab23fa9abb200d"
-            }
+            },
+            {"redirect":null,"path":"/message","component":"layouts/RouteView","route":"1",
+                "children":[
+            {"path":"/modules/message/sysMessageList","component":"modules/message/SysMessageList","route":"1",
+                "meta":
+            {"keepAlive":false,"internalOrExternal":false,"title":"消息管理"},"name":"modules-message-sysMessageList","id":"944abf0a8fc22fe1f1154a389a574154"}],
+            "meta":
+            {"keepAlive":false,"internalOrExternal":false,"icon":"message","title":"消息中心"},
+            "name":"message","id":"5c8042bd6c601270b2bbd9b20bccc68b"}
         ]
     },
     "timestamp": 1582869363800

@@ -18,10 +18,12 @@
     <div id="app">
         <!-- 表达式 -->
         <span> Message: {{ msg }}</span>
+        <div>{{obj.b}}</div>
+        a   &nbsp;  b
         <!-- html -->
         <span v-html="rawHtml"></span>
         <!-- 属性绑定 -->
-        <div v-bind:id="dynamicId"></div>
+        <div v-bind:id="str"></div>
         <!-- 表达式 -->
         <h4>{{ number + 1 }}</h4>
         <h4> {{ ok ? 'YES' : 'NO' }}</h4>
@@ -35,9 +37,12 @@
                 msg: 'template',
                 rawHtml: '<div class="c-name"> hello rawHtml</div>',
                 dynamicId:'app-name',
+                str:'asd',
+                str2:"ad",
                 number:665,
                 ok:true,
-                message:'武汉加油！中国加油！'
+                message:'武汉加油！中国加油！',
+                obj:{}
             }
         })
     </script>

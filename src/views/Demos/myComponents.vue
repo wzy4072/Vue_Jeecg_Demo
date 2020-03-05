@@ -89,6 +89,7 @@ import childThree from "./componets/child3";
 import c4 from "./componets/child4";
 import c5 from "./componets/child5";
 
+var obj ={}
 import LifeCircle from "./componets/lifeCircle";
 export default {
   components: {

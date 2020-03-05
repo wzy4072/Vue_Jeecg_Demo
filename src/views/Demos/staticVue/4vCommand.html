@@ -30,8 +30,11 @@
     <div id="app">
 
         <h2> v-if </h2>
+
         <div v-if="isTrue">v-if isTrue :{{isTrue}}</div>
-        <button @click="isTrue = !isTrue">TOGGLE IS TRUE</button> <span>isTrue value:{{isTrue}}</span>
+
+        <button @click="isTrue = !isTrue">TOGGLE IS TRUE</button> 
+        <span>isTrue value:{{isTrue}}</span>
 
         <h4 v-if="num == 1">step one!</h4>
         <h4 v-else-if="num == 2">step two!</h4>
@@ -47,6 +50,7 @@
 
         <hr>
         <h2> v-for </h2>
+        
         <ul>
             <li v-for="v in 3">
                 {{ v }}
@@ -76,7 +80,7 @@
 
 
         <div v-bind:class="['red','weight',fSize]">class text</div>
-        <div v-bind:class="{ active: isActive ,fSize:true}">class text</div>
+        <div v-bind:class="{ active: isActive ,fSize:true}" class="aa">class text</div>
         <!-- v-bind:class v-bind:style 有多种写法，请查看官方文档“Class 与 Style 绑定”章节-->
 
         <h2>v-on</h2>

@@ -12,7 +12,7 @@
   </div>
 </template>
 <script>
-// import { getAction } from "@/api/manage";
+import { getAction } from "@/api/manage";
 
 const data = [
   {
@@ -72,10 +72,12 @@ export default {
   methods: {
     getTableDataById() {
       // 模拟查找
-      this.dataSource = data;
-      // getAction("https://randomuser.me/api", { results: 10 }).then(data => {
-      //   this.dataSource = data.results;
-      // });
+      // this.dataSource = data;
+      getAction("https://randomuser.me/api", { results: 10 }).then(data => {
+        this.dataSource = data.aaa;
+
+        // this.dataSource = data.results;
+      });
     }
   }
 };

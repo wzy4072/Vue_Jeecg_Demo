@@ -1,0 +1,28 @@
+{
+    "success": true,
+    "message": "操作成功！",
+    "code": 0,
+    "result": [
+        {
+            "value": "4",
+            "text": "系统",
+            "title": "系统"
+        },
+        {
+            "value": "1",
+            "text": "短信",
+            "title": "短信"
+        },
+        {
+            "value": "2",
+            "text": "邮件",
+            "title": "邮件"
+        },
+        {
+            "value": "3",
+            "text": "微信",
+            "title": "微信"
+        }
+    ],
+    "timestamp": 1583376577616
+}
