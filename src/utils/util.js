@@ -1,4 +1,4 @@
-import { isURL } from '@/utils/validate'
+import { isURL } from './validate'
 
 /**
  * @param {string} url
