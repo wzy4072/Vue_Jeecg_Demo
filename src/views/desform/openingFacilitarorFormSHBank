@@ -1,0 +1,1264 @@
+<template>
+  <a-modal
+    v-model="visible"
+    title="理财账号申请"
+    centered
+    @cancel="hideModal"
+    :width="1500"
+    :footer="null"
+  >
+    <div>
+      <a-form :form="form">
+        <a-tabs defaultActiveKey="1" @change="tabsChange">
+          <a-tab-pane tab="企业资料" key="1">
+            <a-row>
+              <a-col :span="12">
+                <a-form-item label="理财服务商" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    :disabled="true"
+                    v-decorator="['facilitatorName',{initialValue: finaceOpenningDTO.facilitatorName}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="客户名称" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    :disabled="true"
+                    v-decorator="['companyName',{initialValue: companyName}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="企业注册类型" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-select
+                    :disabled="true"
+                    v-decorator="['agreementType',{rules: [{required: true, message: '请输入企业注册类型' }],initialValue: conductFinaceOpenningDTO.agreementType}]"
+                    placeholder="请输入企业注册类型"
+                  >
+                    <a-select-option key="A" value="A">企业法人营业执照</a-select-option>
+                    <a-select-option key="C" value="C">个体工商执照</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="企业注册登记号" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    v-decorator="['agreementNumber',{rules: [{required: true, message: '请输入企业注册登记号' },{ pattern: /^(?:(?![IOZSV])[\dA-Z]){2}\d{6}(?:(?![IOZSV])[\dA-Z]){10}$/, message: '营业执照号码为15或18位数字或字母！' }],initialValue: conductFinaceOpenningDTO.agreementNumber}]"
+                    placeholder="请输入企业注册登记号(企业营业执照注册号)"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="企业英文客户全称" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    v-decorator="['companyDesc',{rules: [{required: true, message: '请输入企业英文客户全称' }],initialValue: conductFinaceOpenningDTO.companyDesc}]"
+                    placeholder="请输入企业英文客户全称，无则填入“ No English Name ”"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12" style="height:94px;">
+                <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="营业执照">
+                  <a-upload
+                    name="fileInfo"
+                    action="/api/filesystem/attachmentInfo/uploadFile"
+                    :headers="headers"
+                    v-decorator="['companyImgID', 
+                    {
+                      rules: [ {required: true, message: '请上传营业执照文件' }],
+                      initialValue: conductFinaceOpenningDTO.companyImgID,
+                      valuePropName: 'fileList',
+                      getValueFromEvent: normFile,
+                    }]"
+                  >
+                    <a-button>
+                      <a-icon type="upload" />
+                      {{haveFile('companyImgID') ? '替换' : '上传'}}
+                    </a-button>
+                  </a-upload>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业成立日期">
+                  <a-date-picker
+                    placeholder="企业成立日期"
+                    :disabledDate="disabledDateBefore"
+                    v-decorator="[ 'companyFoundDate', {rules: [{ required: false, message: '请输入企业成立日期' }] ,initialValue:conductFinaceOpenningDTO.companyFoundDate}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业营业执照证件起始日">
+                  <a-date-picker
+                    placeholder="企业营业执照证件起始日"
+                    :disabledDate="disabledDateBefore"
+                    v-decorator="[ 'companyIdFromDate', {rules: [{ required: false, message: '请输入企业营业执照证件起始日' }] ,initialValue:conductFinaceOpenningDTO.companyIdFromDate}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业营业执照证件到期日">
+                  <a-date-picker
+                    placeholder="企业营业执照证件到期日，如果没有,请统一填写2099-01-01"
+                    :disabledDate="disabledDateAfter"
+                    v-decorator="[ 'confirmationDate', {rules: [{ required: true, message: '请输入企业成立日期' }] ,initialValue:conductFinaceOpenningDTO.confirmationDate}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业经营范围">
+                  <a-input
+                    allowClear
+                    placeholder="企业经营范围"
+                    v-decorator="[ 'scopeOfBus', {rules: [{ required: true, message: '请输入企业经营范围' }] ,initialValue:conductFinaceOpenningDTO.scopeOfBus}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业经营住所">
+                  <a-input
+                    allowClear
+                    placeholder="企业经营住所"
+                    v-decorator="[ 'busAddress', {rules: [{ required: false, message: '请输入企业经营住所' }] ,initialValue:conductFinaceOpenningDTO.busAddress}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业注册资本">
+                  <a-input-number
+                    style="width:100%"
+                    placeholder="企业注册资本"
+                    v-decorator="[ 'agreementMoney', {rules: [{ required: true, message: '请输入企业注册资本' }] ,initialValue:conductFinaceOpenningDTO.agreementMoney}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业规模">
+                  <a-select
+                    placeholder="企业规模"
+                    v-decorator="[ 'comDibilityLimit', {rules: [{ required: true, message: '请选择企业规模' }] ,initialValue:conductFinaceOpenningDTO.comDibilityLimit}]"
+                  >
+                    <a-select-option key="T" value="T">少于15人</a-select-option>
+                    <a-select-option key="S" value="S">15-150人</a-select-option>
+                    <a-select-option key="M" value="M">150-2000人</a-select-option>
+                    <a-select-option key="L" value="L">2000人以上</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="客户类别">
+                  <a-select
+                    :options="customerType"
+                    :showSearch="true"
+                    placeholder="客户类别，无法确认则选择其他责任公司"
+                    v-decorator="[ 'custType', {rules: [{ required: true, message: '请选择客户类别' }] ,initialValue:conductFinaceOpenningDTO.custType}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="行业类别">
+                  <a-select
+                    :options="industry"
+                    :showSearch="true"
+                    placeholder="行业类别"
+                    v-decorator="[ 'industry', {rules: [{ required: true, message: '请选择行业类别' }] ,initialValue:conductFinaceOpenningDTO.industry}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="存款人类别">
+                  <a-select
+                    placeholder="存款人类别"
+                    v-decorator="[ 'depositHuman', {rules: [{ required: true, message: '请选择存款人类别' }] ,initialValue:conductFinaceOpenningDTO.depositHuman}]"
+                  >
+                    <a-select-option key="01" value="01">企业法人</a-select-option>
+                    <a-select-option key="02" value="02">非法人企业</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业注册地址省市区代码">
+                  <a-cascader
+                    :options="cascaderOptions"
+                    :loadData="loadCascaderData"
+                    v-decorator="[ 'resDistList', {rules: [{ required: true, message: '请选择企业注册地址省市区代码' }] ,initialValue:conductFinaceOpenningDTO.resDistList}]"
+                    placeholder="企业注册地址省市区代码"
+                    changeOnSelect
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业注册街道地址">
+                  <a-input
+                    placeholder="企业注册街道地址"
+                    v-decorator="[ 'regStrentDoor', {rules: [{required:true,message:'请输入企业注册街道地址（具体到门牌号）'},{ max:300, message: '不超过300字符' }] ,initialValue:conductFinaceOpenningDTO.regStrentDoor}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业注册电话号码">
+                  <a-input
+                    placeholder="企业注册电话号码，无法确认则输入法人的手机号码"
+                    v-decorator="[ 'regTePhone', {rules: [{ required: false, message: '企业注册电话号码' },{ pattern: /^([1][3,4,5,7,8][0-9]{9})|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})$/, message: '联系电话格式不正确！' }] ,initialValue:conductFinaceOpenningDTO.regTePhone}]"
+                  />
+                </a-form-item>
+              </a-col>
+
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业办公省市区代码">
+                  <a-cascader
+                    :options="cascaderOptions"
+                    :loadData="loadCascaderData"
+                    v-decorator="[ 'workDistList', {rules: [{ required: true, message: '请选择企业办公省市区代码' }] ,initialValue:conductFinaceOpenningDTO.workDistList}]"
+                    placeholder="企业办公省市区代码"
+                    changeOnSelect
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业办公街道地址">
+                  <a-input
+                    placeholder="企业办公街道地址"
+                    v-decorator="[ 'workStrentDoor', {rules: [{ max:300, message: '不超过300字符' }] ,initialValue:conductFinaceOpenningDTO.workStrentDoor}]"
+                  />
+                </a-form-item>
+              </a-col>
+
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="企业办公电话号码">
+                  <a-input
+                    placeholder="企业办公电话号码，无法确认则输入法人的手机号码"
+                    v-decorator="[ 'workAddressPhone', {rules: [{ required: false, message: '请输入企业办公电话号码' },{ pattern: /^([1][3,4,5,7,8][0-9]{9})|(0\d{2,3}-\d{7,8}|\(?0\d{2,3}[)-]?\d{7,8}|\(?0\d{2,3}[)-]*\d{7,8})$/, message: '联系电话格式不正确！' }] ,initialValue:conductFinaceOpenningDTO.workAddressPhone}]"
+                  />
+                </a-form-item>
+              </a-col>
+            </a-row>
+          </a-tab-pane>
+
+          <a-tab-pane tab="银行账户资料" key="2">
+            <a-row>
+              <a-col :span="24">
+                <a-form-item label="已有银行账号" :label-col="{ span: 6 }" :wrapper-col="wrapperCol">
+                  <a-select
+                    v-decorator="['bankId',{rules: [{ message: '请选择银行账号'}],initialValue:conductFinaceOpenningDTO.bankId}]"
+                    placeholder="请选择已有银行账号"
+                    showSearch
+                    @change="handleChange"
+                  >
+                    <a-select-option key="1" value>请选择</a-select-option>
+                    <a-select-option
+                      v-for="d in bankList"
+                      :key="d.id"
+                      :value="d.id"
+                    >{{d.bankAcco}}({{d.bankAcconame}})</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="银行账号" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    :disabled="true"
+                    v-decorator="['account',{rules: [{required: false, message: '请输入银行账号' }],initialValue:bankInfo.bankAcco}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="银行类型" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    :disabled="true"
+                    v-decorator="['bankPrefixName',{rules: [{required: false, message: '请输入银行类型' }],initialValue:bankInfo.bankPrefixName}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="银行全称" :label-col="labelCol" :wrapper-col="{ span: 14 }">
+                  <a-input
+                    :disabled="true"
+                    v-decorator="['bankName',{rules: [{required: false, message: '请输入银行账户名' }],initialValue:bankInfo.bankName}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="银行账户名称" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    :disabled="true"
+                    v-decorator="['bankAcconame',{rules: [{required: false, message: '请输入银行账户名' }],initialValue:bankInfo.bankAcconame}]"
+                  />
+                </a-form-item>
+              </a-col>
+
+              <a-col :span="12">
+                <a-form-item label="银行联行号" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    :disabled="true"
+                    v-decorator="['bankCode',{rules: [{required: false, message: '请输入银行联行号' }],initialValue:bankInfo.bankCode}]"
+                  />
+                </a-form-item>
+              </a-col>
+
+              <a-col :span="12">
+                <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="绑定卡清算行行号">
+                  <a-select
+                    :options="liquidation"
+                    :showSearch="true"
+                    placeholder="绑定卡清算行行号"
+                    v-decorator="[ 'acctBank', {rules: [{ required: true, message: '请选择绑定卡清算行行号' }] ,initialValue:conductFinaceOpenningDTO.acctBank}]"
+                  />
+                </a-form-item>
+              </a-col>
+            </a-row>
+          </a-tab-pane>
+
+          <a-tab-pane tab="受益人" key="4">
+            <div v-for="(earing,index) in conductFinaceOpenningDTO.earningOwnerList" :key="index">
+              <a-row>
+                <a-col :span="12">
+                  <a-form-item label="受益所有人性质" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-select
+                      @change="handleEarningType"
+                      v-decorator="['earningOwnerList['+index+'].earningOwnerType',{rules: [{required: true, message: '请选择受益所有人性质' }],initialValue:conductFinaceOpenningDTO.earningOwnerList[index].earningOwnerType}]"
+                      placeholder="请选择受益所有人性质"
+                    >
+                      <a-select-option key value>请选择</a-select-option>
+                      <a-select-option key="1" value="1">直接或间接</a-select-option>
+                      <a-select-option key="2" value="2">通过人事、财务控制</a-select-option>
+                      <a-select-option key="3" value="3">高级管理人员</a-select-option>
+                      <a-select-option key="4" value="4">普通合伙人</a-select-option>
+                      <a-select-option key="5" value="5">其它</a-select-option>
+                    </a-select>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12" v-if="earningOwnerTypeIsOther">
+                  <a-form-item label="受益所有人性质" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['earningOwnerList['+index+'].earningOwnerTypeName',{rules: [{required: true, message: '请输入受益所有人性质' }],initialValue:conductFinaceOpenningDTO.earningOwnerList[index].earningOwnerTypeName}]"
+                      placeholder="请输入受益所有人性质"
+                    />
+                  </a-form-item>
+                </a-col>
+              </a-row>
+              <a-row>
+                <a-col :span="12">
+                  <a-form-item label="受益所有人姓名" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['earningOwnerList['+index+'].earningOwnerName',{rules: [{required: true, message: '请输入受益所有人姓名' }],initialValue:conductFinaceOpenningDTO.earningOwnerList[index].earningOwnerName}]"
+                      placeholder="请输入受益所有人姓名"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item label="受益所有人证件类型" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-select
+                      v-decorator="['earningOwnerList['+index+'].earningOwnerIdType',{rules: [{required: true, message: '请选择受益所有人证件类型' }],initialValue:conductFinaceOpenningDTO.earningOwnerList[index].earningOwnerIdType}]"
+                      placeholder="请选择受益所有人证件类型"
+                    >
+                      <a-select-option key="A" value="A">身份证</a-select-option>
+                      <a-select-option key="B" value="B">护照</a-select-option>
+                    </a-select>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item label="受益所有人证件号码" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['earningOwnerList['+index+'].earningOwnerIdNo',{rules: [{required: true, message: '请输入受益所有人证件号码' }],initialValue:conductFinaceOpenningDTO.earningOwnerList[index].earningOwnerIdNo}]"
+                      placeholder="请输入受益所有人证件号码"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item :labelCol="labelCol" :wrapperCol="wrapperCol" label="受益所有人证件有效期">
+                    <a-date-picker
+                      placeholder="受益所有人证件有效期"
+                      v-decorator="[ 'earningOwnerList['+index+'].earningOwnerLimitDate', {rules: [{ required: true, message: '请输入受益所有人证件有效期' }] ,initialValue:conductFinaceOpenningDTO.earningOwnerList[index].earningOwnerLimitDate}]"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item label="受益所有人国籍" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['earningOwnerList['+index+'].earningOwnerCountry',{rules: [{required: true, message: '请输入受益所有人国籍' }],initialValue:conductFinaceOpenningDTO.earningOwnerList[index].earningOwnerCountry}]"
+                      placeholder="请输入受益所有人国籍"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item label="受益所有人地址" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['earningOwnerList['+index+'].earningOwnerAddress',{rules: [{required: true, message: '请输入受益所有人地址' }],initialValue:conductFinaceOpenningDTO.earningOwnerList[index].earningOwnerAddress}]"
+                      placeholder="请输入受益所有人地址"
+                    />
+                  </a-form-item>
+                </a-col>
+              </a-row>
+            </div>
+          </a-tab-pane>
+
+          <a-tab-pane tab="法人资料" key="3">
+            <a-row>
+              <a-col :span="12">
+                <a-form-item label="法人姓名" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    v-decorator="['corpName',{rules: [{required: true, message: '请输入法人姓名' }],initialValue:conductFinaceOpenningDTO.corpName}]"
+                    placeholder="请输入法人姓名"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="法人身份证号码" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    v-decorator="['legPerId',{rules: [{required: true, message: '请输入法人身份证号码' },{ pattern: /^\d{15}(\d{2}([0-9]|X))?$/, message: '身份证号码格式不正确！' }],initialValue:conductFinaceOpenningDTO.legPerId}]"
+                    placeholder="请输入法人身份证号码"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <!-- <a-form-item label="法人代表电话" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input-group compact>
+                    <a-input
+                      v-decorator="['corpMobile',{rules: [{required: true, message: '请输入法人代表电话' },{ pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '联系电话格式不正确！' }],initialValue:conductFinaceOpenningDTO.corpMobile}]"
+                      placeholder="请输入法人代表电话"
+                    />
+                    <a-button type="primery" @click="onSend" :disabled="canuse">
+                      <span v-if="canuse">({{countdown}})秒后重发</span>
+                      <span v-else>发送验证码</span>
+                    </a-button>
+                  </a-input-group>
+                </a-form-item>-->
+
+                <a-form-item
+                  label="法人代表电话"
+                  :label-col="labelCol"
+                  :wrapper-col="wrapperCol"
+                  style="margin-bottom:0;"
+                >
+                  <a-form-item :style="{ display: 'inline-block', width: 'calc(70% - 12px)' }">
+                    <!-- <a-input-group compact> -->
+                    <a-input
+                      v-decorator="['corpMobile',{rules: [{required: true, message: '请输入法人代表电话' },{ pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '联系电话格式不正确！' }],initialValue:conductFinaceOpenningDTO.corpMobile}]"
+                      placeholder="请输入法人代表电话"
+                    />
+                    <!-- </a-input-group> -->
+                  </a-form-item>
+                  <span :style="{ display: 'inline-block', width: '24px', textAlign: 'center' }"></span>
+                  <a-form-item :style="{ display: 'inline-block', width: 'calc(30% - 12px)' }">
+                    <a-button
+                      type="primery"
+                      @click="countDown"
+                      :disabled="!canClick"
+                      style="float: right;margin-top: 4px;"
+                    >
+                      <span>{{ canClick ? '发送验证码' : `(${totalTime})秒后重发` }}</span>
+                    </a-button>
+                  </a-form-item>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="动态验证码" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-input
+                    v-decorator="['dynamicCode',{rules: [{required: true, message: '请输入动态验证码' }],initialValue:conductFinaceOpenningDTO.dynamicCode}]"
+                    placeholder="请输入动态验证码"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="法人身份证起始日" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-date-picker
+                    :disabledDate="disabledDateBefore"
+                    v-decorator="['corpIdFromDate',{rules: [{required: false, message: '请选择法人身份证起始日' }],initialValue:conductFinaceOpenningDTO.corpIdFromDate}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="法人身份证到期日" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-date-picker
+                    :disabledDate="disabledDateAfter"
+                    v-decorator="['corpIdLimitDate',{rules: [{required: true, message: '请选择法人身份证到期日' }],initialValue:conductFinaceOpenningDTO.corpIdLimitDate}]"
+                  />
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="法人身份证原件正面图片">
+                  <a-upload
+                    name="fileInfo"
+                    action="/api/filesystem/attachmentInfo/uploadFile"
+                    :headers="headers"
+                    v-decorator="['corpIdFrontImgID', 
+                    {
+                      rules: [
+                      {required: true, message: '请上传法人身份证原件正面图片' },
+                      ],
+                      initialValue: conductFinaceOpenningDTO.corpIdFrontImgID,
+                       valuePropName: 'fileList',
+                       getValueFromEvent: normFile,
+                    }]"
+                  >
+                    <a-button>
+                      <a-icon type="upload" />
+                      {{haveFile('corpIdFrontImgID') ? '替换' : '上传'}}
+                    </a-button>
+                  </a-upload>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="法人身份证原件反面图片">
+                  <a-upload
+                    name="fileInfo"
+                    action="/api/filesystem/attachmentInfo/uploadFile"
+                    :headers="headers"
+                    v-decorator="['corpIdBackImgID', 
+                    {
+                      rules: [
+                      {required: true, message: '请上传法人身份证原件反面图片' },
+                      ],
+                      initialValue: conductFinaceOpenningDTO.corpIdBackImgID,
+                       valuePropName: 'fileList',
+                       getValueFromEvent: normFile,
+                    }]"
+                  >
+                    <a-button>
+                      <a-icon type="upload" />
+                      {{haveFile('corpIdBackImgID') ? '替换' : '上传'}}
+                    </a-button>
+                  </a-upload>
+                </a-form-item>
+              </a-col>
+            </a-row>
+          </a-tab-pane>
+
+          <a-tab-pane tab="经办信息" key="6">
+            <a-row>
+              <a-col :span="12">
+                <a-form-item label="办理类型" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-select
+                    @change="handelChangeApply"
+                    v-decorator="['appApplyType',{rules: [{required: true, message: '请选择办理类型' }],initialValue:conductFinaceOpenningDTO.appApplyType}]"
+                    placeholder="办理类型"
+                  >
+                    <a-select-option key="1" value="1">法人亲办</a-select-option>
+                    <a-select-option key="2" value="2">授权经办</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <a-col :span="12">
+                <a-form-item label="财务主管类型" :label-col="labelCol" :wrapper-col="wrapperCol">
+                  <a-select
+                    @change="handelChangeCfo"
+                    v-decorator="['cfoType',{rules: [{required: true, message: '请选择财务主管类型' }],initialValue:conductFinaceOpenningDTO.cfoType}]"
+                    placeholder="财务主管类型"
+                  >
+                    <a-select-option key="1" value="1">法人兼任</a-select-option>
+                    <a-select-option key="2" value="2">经办人兼任</a-select-option>
+                    <a-select-option key="3" value="3">其它</a-select-option>
+                  </a-select>
+                </a-form-item>
+              </a-col>
+              <div v-if="cfoIsTrue">
+                <a-divider/>
+                <a-row>
+                <a-col :span="12">
+                  <a-form-item label="财务主管姓名" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['cfoName',{rules: [{required: true, message: '请输入财务主管姓名' }],initialValue:conductFinaceOpenningDTO.cfoName}]"
+                      placeholder="请输入财务主管姓名"
+                    />
+                  </a-form-item>
+                </a-col>
+                </a-row>
+                <a-row>
+                <a-col :span="12">
+                  <a-form-item label="财务主管证件号" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['cfoIdNo',{rules: [{required: true, message: '请输入财务主管证件号' },{ pattern: /^(\d{15})|(\d{17}([0-9]|X))$/, message: '证件格式不正确！' }],initialValue:conductFinaceOpenningDTO.cfoIdNo}]"
+                      placeholder="请输入财务主管证件号"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item label="财务主管电话" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['cfoMobile',{rules: [{required: true, message: '请输入财务主管电话' },{ pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '联系电话格式不正确！' }],initialValue:conductFinaceOpenningDTO.cfoMobile}]"
+                      placeholder="请输入财务主管电话"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item label="财务主管身份证起始日" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-date-picker
+                      :disabledDate="disabledDateBefore"
+                      v-decorator="['cfoIdFromDate',{rules: [{required: false, message: '请选择财务主管身份证起始日' }],initialValue:conductFinaceOpenningDTO.cfoIdFromDate}]"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item label="财务主管证件到期日" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-date-picker
+                      :disabledDate="disabledDateAfter"
+                      v-decorator="['cfoIdLimitDate',{rules: [{required: true, message: '请选择财务主管证件到期日' }],initialValue:conductFinaceOpenningDTO.cfoIdLimitDate}]"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item
+                    :label-col="labelCol"
+                    :wrapper-col="wrapperCol"
+                    label="财务主管身份证原件正面图片"
+                  >
+                    <a-upload
+                      name="fileInfo"
+                      action="/api/filesystem/attachmentInfo/uploadFile"
+                      :headers="headers"
+                      v-decorator="['cfoIdFrontImgID', 
+                    {
+                      rules: [
+                      {required: true, message: '请上传财务主管身份证原件正面图片' },
+                      ],
+                      initialValue: conductFinaceOpenningDTO.cfoIdFrontImgID,
+                       valuePropName: 'fileList',
+                       getValueFromEvent: normFile,
+                    }]"
+                    >
+                      <a-button>
+                        <a-icon type="upload" />
+                        {{haveFile('cfoIdFrontImgID') ? '替换' : '上传'}}
+                      </a-button>
+                    </a-upload>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item
+                    :label-col="labelCol"
+                    :wrapper-col="wrapperCol"
+                    label="财务主管身份证原件反面图片"
+                  >
+                    <a-upload
+                      name="fileInfo"
+                      action="/api/filesystem/attachmentInfo/uploadFile"
+                      :headers="headers"
+                      v-decorator="['cfoIdBackImgID', 
+                    {
+                      rules: [
+                      {required: true, message: '请上传财务主管身份证原件反面图片' },
+                      ],
+                      initialValue: conductFinaceOpenningDTO.cfoIdBackImgID,
+                       valuePropName: 'fileList',
+                       getValueFromEvent: normFile,
+                    }]"
+                    >
+                      <a-button>
+                        <a-icon type="upload" />
+                        {{haveFile('cfoIdBackImgID') ? '替换' : '上传'}}
+                      </a-button>
+                    </a-upload>
+                  </a-form-item>
+                </a-col>
+                </a-row>
+              </div>
+              <div v-if="checkerIsTrue">
+                <a-divider/>
+                <a-row>
+                <a-col :span="12">
+                  <a-form-item label="经办人姓名" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['checkerName',{rules: [{required: true, message: '请输入经办人姓名' }],initialValue:conductFinaceOpenningDTO.checkerName}]"
+                      placeholder="请输入经办人姓名"
+                    />
+                  </a-form-item>
+                </a-col>
+                </a-row>
+                <a-row>
+                <a-col :span="12">
+                  <a-form-item label="经办人身份证号码" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['checkerIdCard',{rules: [{required: true, message: '请输入经办人身份证号码' },{ pattern: /^(\d{15})|(\d{17}([0-9]|X))$/, message: '证件格式不正确！' }],initialValue:conductFinaceOpenningDTO.checkerIdCard}]"
+                      placeholder="请输入经办人身份证号码"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item label="经办人手机号" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-input
+                      v-decorator="['checkerMobile',{rules: [{required: true, message: '请输入经办人手机号' },{ pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '联系电话格式不正确！'}],initialValue:conductFinaceOpenningDTO.checkerMobile}]"
+                      placeholder="请输入经办人手机号"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item label="经办人身份证起始日" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-date-picker
+                      :disabledDate="disabledDateBefore"
+                      v-decorator="['checkerIdFromDate',{rules: [{required: false, message: '请选择经办人身份证起始日' }],initialValue:conductFinaceOpenningDTO.checkerIdFromDate}]"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item label="经办人证件到期日" :label-col="labelCol" :wrapper-col="wrapperCol">
+                    <a-date-picker
+                      :disabledDate="disabledDateAfter"
+                      v-decorator="['checkerIdLimitDate',{rules: [{required: true, message: '请选择经办人证件到期日' }],initialValue:conductFinaceOpenningDTO.checkerIdLimitDate}]"
+                    />
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="经办人身份证正面图片">
+                    <a-upload
+                      name="fileInfo"
+                      action="/api/filesystem/attachmentInfo/uploadFile"
+                      :headers="headers"
+                      v-decorator="['checkerIdFrontImgID', 
+                    {
+                      rules: [
+                      {required: true, message: '请上传经办人身份证正面图片' },
+                      ],
+                      initialValue: conductFinaceOpenningDTO.checkerIdFrontImgID,
+                       valuePropName: 'fileList',
+                       getValueFromEvent: normFile,
+                    }]"
+                    >
+                      <a-button>
+                        <a-icon type="upload" />
+                        {{haveFile('checkerIdFrontImgID') ? '替换' : '上传'}}
+                      </a-button>
+                    </a-upload>
+                  </a-form-item>
+                </a-col>
+                <a-col :span="12">
+                  <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="经办人身份证反面图片">
+                    <a-upload
+                      name="fileInfo"
+                      action="/api/filesystem/attachmentInfo/uploadFile"
+                      :headers="headers"
+                      v-decorator="['checkerIdBackImgID', 
+                    {
+                      rules: [
+                      {required: true, message: '请上传经办人身份证反面图片' },
+                      ],
+                      initialValue: conductFinaceOpenningDTO.checkerIdBackImgID,
+                       valuePropName: 'fileList',
+                       getValueFromEvent: normFile,
+                    }]"
+                    >
+                      <a-button>
+                        <a-icon type="upload" />
+                        {{haveFile('checkerIdBackImgID') ? '替换' : '上传'}}
+                      </a-button>
+                    </a-upload>
+                  </a-form-item>
+                </a-col>
+                </a-row>
+              </div>
+            </a-row>
+          </a-tab-pane>
+
+          <a-tab-pane tab="其他附件" key="99">
+            <a-row>
+              <a-col :span="12">
+                <a-form-item :label-col="labelCol" :wrapper-col="wrapperCol" label="上行普惠企业授权委托书文件">
+                  <a-upload
+                    name="fileInfo"
+                    action="/api/filesystem/attachmentInfo/uploadFile"
+                    :headers="headers"
+                    v-decorator="['delegationImgID', 
+                    {
+                      rules: [
+                      {required: true, message: '请上传上行普惠企业授权委托书文件' },
+                      ],
+                      initialValue: conductFinaceOpenningDTO.delegationImgID,
+                       valuePropName: 'fileList',
+                       getValueFromEvent: normFile,
+                    }]"
+                  >
+                    <a-button>
+                      <a-icon type="upload" />
+                      {{haveFile('delegationImgID') ? '替换' : '上传'}}
+                    </a-button>
+                  </a-upload>
+                </a-form-item>
+              </a-col>
+            </a-row>
+          </a-tab-pane>
+
+          <a-tab-pane tab="温馨提示" key="100">
+            <p style="margin-left:250px;">1、开户成功后，请进行汇款激活。</p>
+            <p style="margin-left:250px;">2、账户激活中将自动签约上海银行易精灵。</p>
+            <p style="margin-left:250px;">3、开户成功后请在详情页进行风险评估。</p>
+          </a-tab-pane>
+        </a-tabs>
+      </a-form>
+      <div class="drawer-bootom-button">
+        <a-button style="margin-right: .8rem" @click="hideModal">取消</a-button>
+        <a-button style="margin-right: .8rem" type="primary" @click="handleSubmit(1)">暂存</a-button>
+        <a-button type="primary" @click="handleSubmit(2)">提交</a-button>
+      </div>
+    </div>
+  </a-modal>
+</template>
+<script>
+import { log } from 'util'
+import Vue from 'vue'
+import { USER_INFO } from '@/store/mutation-types'
+import moment from 'moment'
+import { getAction, postAction } from '@/api/manage'
+// import { addressCode } from '../static/shbank/address.list'
+import { customerType } from '../static/shbank/custType.list'
+import { industry } from '../static/shbank/industry.list'
+import { liquidation } from '../static/shbank/liquidation.list'
+import { get } from 'http'
+
+function isLeaf(list) {
+  list.map(item => {
+    item.isLeaf = false
+    if (!/0{6}$/.test(item.value)) {
+      item.isLeaf = true
+    }
+  })
+  return list
+}
+
+function getParentCode(code) {
+  // 省级
+  if (/0{10}$/.test(code)) {
+    return code.slice(0, 2)
+  }
+  // 市级
+  if (/0{8}$/.test(code)) {
+    return code.slice(0, 4)
+  }
+  // 县区级
+  if (/0{6}$/.test(code)) {
+    return code.slice(0, 6)
+  }
+  // 乡镇街道级
+  if (/0{3}$/.test(code)) {
+    return code.slice(0, 9)
+  }
+}
+const defaultSetTime = 3
+export default {
+  data() {
+    return {
+      companyName: '',
+      addressCode: [],
+      canClick: true,
+      totalTime: defaultSetTime,
+      industry,
+      liquidation,
+      customerType,
+      visible: false,
+      cfoIsTrue: false,
+      checkerIsTrue: false,
+      earningOwnerTypeIsOther: false,
+      finaceOpenningDTO: {
+        facilitatorName: ''
+      },
+      earningOwnerList: [{}],
+      conductFinaceOpenningDTO: {
+        agreementType: 'A',
+        companyDesc: 'No English Name',
+        earningOwnerList: [
+          {
+            earningOwnerType: ''
+          }
+        ],
+        companyImgID: [],
+        corpIdFrontImgID: [],
+        corpIdBackImgID: [],
+        cfoIdFrontImgID: [],
+        cfoIdBackImgID: [],
+        checkerIdFrontImgID: [],
+        checkerIdBackImgID: [],
+        delegationImgID: []
+      },
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 5 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 }
+      },
+      bankList: [],
+      bankInfo: {},
+      headers: {
+        authorization: 'authorization-text'
+      },
+
+      fileList: [],
+      form: this.$form.createForm(this),
+      url: {
+        getBankList: '/customer/bankAccount/getBankList',
+        getRegion: '/accountCenter/conductFinanceOpening/getRegion',
+        queryOneTemporaryStorage: '/accountCenter/conductFinanceOpening/queryOneTemporaryStorage',
+        temporaryStorageUrl: '/accountCenter/conductFinanceOpening/temporaryStorage',
+        submitOpeningApplicationUrl: '/accountCenter/conductFinanceOpening/submitOpeningApplication',
+        getFileInfo: '/filesystem/attachmentInfo/selectOne'
+      },
+      financeNo: null,
+      cascaderOptions: [],
+
+      visitedTab: []
+    }
+  },
+  created() {
+    const userInfo = Vue.ls.get(USER_INFO)
+    this.companyName = userInfo.corpName
+  },
+  mounted() {
+    this.queryBankList()
+  },
+  methods: {
+    moment,
+    tabsChange(k) {
+      if (this.visitedTab.indexOf(k) == -1) this.visitedTab.push(k)
+    },
+    haveFile(key) {
+      let files = this.form.getFieldValue(key)
+      if (files && files.length > 0) {
+        return true
+      }
+      return false
+    },
+    normFile(e) {
+      console.log('Upload event:', e)
+      if (Array.isArray(e)) {
+        return e.length > 0 ? [e[e.length - 1]] : []
+      }
+      let fileList = e.fileList
+      return fileList.length > 0 ? [fileList[fileList.length - 1]] : []
+    },
+    // 初始化省份列表
+    async initRegion(financeCode, parentCode) {
+      this.financeNo = financeCode
+      getAction(this.url.getRegion, { financeNo: this.financeNo, parentCode: '' }).then(res => {
+        if (res.code == 200) {
+          this.cascaderOptions = isLeaf(res.data)
+          // 检查是否有级联需要渲染
+          this.checkCascaderShow(this.finaceOpenningDTO.shbankOpeningDTO.resDistList)
+          // console.log('-----------------------------------')
+          this.checkCascaderShow(this.finaceOpenningDTO.shbankOpeningDTO.workDistList)
+        }
+      })
+    },
+    //
+    async checkCascaderShow(arr) {
+      let childOptions = this.cascaderOptions
+      for (let i = 0; i < arr.length; i++) {
+        const val = arr[i]
+        let selectOptions = childOptions.filter(opt => opt.value === val)
+        // console.log('selectOptions', selectOptions[0].label, selectOptions[0])
+        if (selectOptions[0].children) {
+          childOptions = selectOptions[0].children
+        } else {
+          childOptions = await this.loadCascaderData(selectOptions)
+        }
+        // console.log('childOptions', childOptions)
+      }
+    },
+
+    // 联动异步查询
+    async loadCascaderData(selectedOptions) {
+      // 如果有就跳过查询
+      const targetOption = selectedOptions[selectedOptions.length - 1]
+      if (targetOption.children) return targetOption.children
+      targetOption.loading = true
+      return await getAction(this.url.getRegion, {
+        financeNo: this.financeNo,
+        parentCode: getParentCode(targetOption.value)
+      }).then(res => {
+        if (res.code == 200) {
+          // 如果有就用旧值
+          targetOption.loading = false
+          if (targetOption.children) return targetOption.children
+          let childList = res.data.filter(item => item.value != targetOption.value)
+          targetOption.children = isLeaf(childList)
+          this.cascaderOptions = [...this.cascaderOptions]
+          return targetOption.children
+        }
+      })
+    },
+    handleEarningType(value) {
+      if (value == 5) {
+        this.earningOwnerTypeIsOther = true
+      }
+    },
+    handelChangeApply(value) {
+      let cfo = this.form.getFieldValue('cfoType')
+      if (value && cfo) {
+        this.changeHandler(value, cfo)
+      }
+    },
+    handelChangeCfo(value) {
+      let appApplyType = this.form.getFieldValue('appApplyType')
+      if (value && appApplyType) {
+        this.changeHandler(appApplyType, value)
+      }
+    },
+    changeHandler(apply, cfo) {
+      //法人亲办、法人兼任财务主管的情况，经办人以及财务主管身份证正反面影像资料文件名称非必输；
+      //  法人亲办、他人兼任财务主管的情况，财务主管身份证正反面影像资料文件名称必输，经办人身份证正反面影像资料文件名称非必输；
+      //  授权经办、法人兼任财务主管的情况，经办人身份证正反面影像资料文件名称必输，财务主管身份证正反面影像资料文件名称非必输；
+      //  授权经办、经办人兼财务主管的情况，经办人身份证正反面影像资料文件名称必输，财务主管身份证正反面影像资料文件名称非必输；
+      //  授权经办、他人兼财务主管的情况，经办人以及财务主管身份证正反面影像资料文件名称必输；
+      if (cfo == 3) {
+        this.cfoIsTrue = true //财务
+        this.checkerIsTrue = true //经办人
+        return
+      }
+      if (apply == 1 && cfo == 1) {
+        this.cfoIsTrue = true
+        this.checkerIsTrue = true
+      } else if (apply == 1 && cfo == 2) {
+        this.cfoIsTrue = true
+        this.checkerIsTrue = false
+      } else if (apply == 2 && cfo == 1) {
+        this.cfoIsTrue = false
+        this.checkerIsTrue = true
+      } else if (apply == 2 && cfo == 2) {
+        this.cfoIsTrue = false
+        this.checkerIsTrue = true
+      }
+    },
+    async showModal(text) {
+      //保存服务商信息
+      this.finaceOpenningDTO.facilitatorId = text.facilitatorId
+      this.finaceOpenningDTO.facilitatorName = text.facilitatorName
+      this.finaceOpenningDTO.facilitatorNo = text.facilitatorNo
+      this.finaceOpenningDTO.fundSaleCertificateNo = text.fundSaleCertificateNo
+      this.finaceOpenningDTO.regulatorOrgName = text.regulatorOrgName
+      this.finaceOpenningDTO.regulatorBankName = text.regulatorBankName
+      this.finaceOpenningDTO.officialNetworkLink = text.officialNetworkLink
+      //查询暂存的信息
+      let _this = this
+      let resData = await getAction(this.url.queryOneTemporaryStorage, {
+        facilitatorId: this.finaceOpenningDTO.facilitatorId
+      }).then(res => {
+        if (res.code == 200) {
+          if (res.data) {
+            return res.data
+          } else {
+            _this.initRegion(_this.finaceOpenningDTO.fundSaleCertificateNo, '')
+            return null
+          }
+        }
+      })
+      if (!resData) return false
+
+      let shDTO = resData.shbankOpeningDTO
+      const upLoadIds = [
+        'companyImgID',
+        'corpIdFrontImgID',
+        'corpIdBackImgID',
+        'cfoIdFrontImgID',
+        'cfoIdBackImgID',
+        'checkerIdFrontImgID',
+        'checkerIdBackImgID',
+        'delegationImgID'
+      ]
+      let files = {}
+      let filesResponse = await Promise.all(
+        upLoadIds.map(async idNa => {
+          let file = await this.queryFileInfo(shDTO[idNa])
+          return shDTO[idNa] ? file : null
+        })
+      )
+      filesResponse.map((f, i) => {
+        const idNa = upLoadIds[i]
+        files[idNa] = f ? [f] : []
+      })
+      // console.log('files', files)
+      Object.assign(_this.finaceOpenningDTO, resData)
+      _this.conductFinaceOpenningDTO = Object.assign({}, shDTO, files)
+
+      //银行账号
+      _this.handleChange(_this.conductFinaceOpenningDTO.bankId)
+
+      //日期处理
+      const dataKeys = [
+        'companyFoundDate',
+        'companyIdFromDate',
+        'confirmationDate',
+        'corpIdFromDate',
+        'corpIdLimitDate',
+        'cfoIdFromDate',
+        'cfoIdLimitDate',
+        'checkerIdFromDate',
+        'checkerIdLimitDate'
+      ]
+      dataKeys.map(keyNa => {
+        if (shDTO[keyNa]) {
+          this.conductFinaceOpenningDTO[keyNa] = moment(shDTO[keyNa])
+        }
+      })
+      if (shDTO.earningOwnerList && shDTO.earningOwnerList[0] && shDTO.earningOwnerList[0].earningOwnerLimitDate)
+        this.conductFinaceOpenningDTO.earningOwnerList[0].earningOwnerLimitDate = moment(
+          shDTO.earningOwnerList[0].earningOwnerLimitDate
+        )
+
+      //经办信息
+      _this.changeHandler(shDTO.appApplyType, shDTO.cfoType)
+
+      //查询省列表
+      _this.initRegion(_this.finaceOpenningDTO.fundSaleCertificateNo, '')
+      this.visible = true
+    },
+    queryBankList() {
+      //这里是自定义的一个请求方法
+      this.bankList = []
+      let _this = this
+      getAction(this.url.getBankList).then(res => {
+        if (res.code == 200) {
+          _this.bankList = res.data
+        }
+      })
+    },
+    handleChange(value) {
+      if (this.bankList.length > 0) {
+        for (let i = 0; i < this.bankList.length; i++) {
+          let bankInfo = this.bankList[i]
+          if (value == bankInfo.id) {
+            this.bankInfo = bankInfo
+            break
+          }
+        }
+      }
+    },
+    async queryFileInfo(id) {
+      let { data } = await getAction(this.url.getFileInfo + '?id=' + id)
+      let file = {
+        uid: data.id,
+        name: data.fileName,
+        status: 'done',
+        response: {
+          data: { id: data.id }
+        }
+      }
+      return file
+    },
+    hideModal() {
+      this.form.resetFields()
+      this.visible = false
+    },
+    handleSubmit(v) {
+      if (this.visitedTab.length < 6) {
+        this.$message.error('请先检查各个标签页填写情况！')
+        return false
+      }
+      let requrl = ''
+      let that = this
+      if (v == '1') {
+        requrl = that.url.temporaryStorageUrl
+      } else {
+        requrl = that.url.submitOpeningApplicationUrl
+      }
+      // 触发表单验
+      that.form.validateFields((err, values) => {
+        if (err) {
+          this.$message.error('请检查填写情况是否有误！')
+        }
+        if (!err) {
+          let formData = Object.assign({}, that.finaceOpenningDTO)
+
+          values.companyImgID = values['companyImgID'][0].response.data.id
+          values.corpIdFrontImgID = values['corpIdFrontImgID'][0].response.data.id
+          values.corpIdBackImgID = values['corpIdBackImgID'][0].response.data.id
+          if (values['cfoIdFrontImgID']) values.cfoIdFrontImgID = values['cfoIdFrontImgID'][0].response.data.id
+          if (values['cfoIdBackImgID']) values.cfoIdBackImgID = values['cfoIdBackImgID'][0].response.data.id
+          if (values['checkerIdFrontImgID'])
+            values.checkerIdFrontImgID = values['checkerIdFrontImgID'][0].response.data.id
+          if (values['checkerIdBackImgID']) values.checkerIdBackImgID = values['checkerIdBackImgID'][0].response.data.id
+          values.delegationImgID = values['delegationImgID'][0].response.data.id
+
+          //日期处理
+          if (values.companyFoundDate) values.companyFoundDate = moment(values.companyFoundDate).format('YYYY-MM-DD')
+          if (values.companyIdFromDate) values.companyIdFromDate = moment(values.companyIdFromDate).format('YYYY-MM-DD')
+          if (values.confirmationDate) values.confirmationDate = moment(values.confirmationDate).format('YYYY-MM-DD')
+          if (values.earningOwnerList[0].earningOwnerLimitDate)
+            values.earningOwnerList[0].earningOwnerLimitDate = moment(
+              values.earningOwnerList[0].earningOwnerLimitDate
+            ).format('YYYY-MM-DD')
+          if (values.corpIdFromDate) values.corpIdFromDate = moment(values.corpIdFromDate).format('YYYY-MM-DD')
+          if (values.corpIdLimitDate) values.corpIdLimitDate = moment(values.corpIdLimitDate).format('YYYY-MM-DD')
+          if (values.cfoIdFromDate) values.cfoIdFromDate = moment(values.cfoIdFromDate).format('YYYY-MM-DD')
+          if (values.cfoIdLimitDate) values.cfoIdLimitDate = moment(values.cfoIdLimitDate).format('YYYY-MM-DD')
+          if (values.checkerIdFromDate) values.checkerIdFromDate = moment(values.checkerIdFromDate).format('YYYY-MM-DD')
+          if (values.checkerIdLimitDate)
+            values.checkerIdLimitDate = moment(values.checkerIdLimitDate).format('YYYY-MM-DD')
+
+          formData.shbankOpeningDTO = values
+          console.log(formData)
+          postAction(requrl, formData).then(data => {
+            if (data.code == '200') {
+              that.$message.success('操作成功')
+              that.hideModal()
+            } else {
+              that.$message.error(data.message)
+            }
+          })
+        }
+      })
+    },
+    /*****************************数据校验方法**************************************** */
+    disabledDateBefore(current) {
+      //只能选择当前日期前的日期
+      return current && current > moment().endOf('day')
+    },
+    disabledDateAfter(current) {
+      //只能选择当前日期后的日期
+      return current && current < moment().endOf('day')
+    },
+    countDown() {
+      if (!this.canClick) return
+      this.form.validateFields(['corpMobile'], (errs, values) => {
+        if (!errs) {
+          // 调用API
+          let param = {}
+          param.financeNo = this.finaceOpenningDTO.fundSaleCertificateNo
+          param.mobile = values.corpMobile
+          param.financeId = this.finaceOpenningDTO.facilitatorId
+          getAction("/accountCenter/conductFinanceOpening/sendMobile",param).then(res=>{
+            if(res.code!=200){
+               this.$message.error(data.message)
+            }else{
+               this.$message.success("发送验证码成功！");
+            }
+          })
+          //TODO
+          // 修改渲染交互
+          this.canClick = false
+          let clock = window.setInterval(() => {
+            this.totalTime--
+            if (this.totalTime == 0) {
+              window.clearInterval(clock)
+              this.totalTime = defaultSetTime
+              this.canClick = true //这里重新开启
+            }
+          }, 1000)
+        }
+      })
+    }
+  }
+}
+</script>
+<style scoped>
+.drawer-bootom-button {
+  position: absolute;
+  bottom: -28px;
+  width: 100%;
+  border-top: 1px solid #e8e8e8;
+  padding: 10px 16px;
+  text-align: right;
+  left: 0;
+  background: #fff;
+  border-radius: 0 0 2px 2px;
+}
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+.flex-wrap >>> .ant-row.ant-form-item {
+  width: 100%;
+}
+.flex-wrap >>> .ant-row.ant-form-item.inline-item {
+  width: 46%;
+  margin-left: 12px;
+}
+</style>

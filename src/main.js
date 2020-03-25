@@ -20,6 +20,7 @@ import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 import "@jeecg/antd-online"
 import '@jeecg/antd-online/dist/OnlineForm.css'
+import custom_form from '@/views/desform/custom_form';
 
 import {
   ACCESS_TOKEN,
@@ -42,6 +43,8 @@ import vueBus from '@/utils/vueBus';
 import JeecgComponents from '@/components/jeecg/index'
 
 Vue.config.productionTip = false
+Vue.use(custom_form);
+
 Vue.use(Storage, config.storageOptions)
 Vue.use(Antd)
 Vue.use(VueAxios, router)

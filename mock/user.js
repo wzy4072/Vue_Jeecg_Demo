@@ -51,161 +51,8 @@ let getUserPermissionByToken = {
   "message": "查询成功",
   "code": 200,
   "result": {
-    "allAuth": [
-      {
-        "action": "online:goGenerateCode",
-        "describe": "代码生成按钮",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "online:sql",
-        "describe": "SQL增强",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "online:ceshi_ruzhi:gwei",
-        "describe": "岗位字段控制",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "online:ceshi_ruzhi:ruz_date",
-        "describe": "入职时间",
-        "type": "2",
-        "status": "1"
-      },
-      {
-        "action": "online:ceshi_ruzhi:add",
-        "describe": "列表添加按钮",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "online:ceshi_ruzhi:export",
-        "describe": "列表导出按钮",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": null,
-        "describe": "入职加载数据请求地址",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "ruzhi:add",
-        "describe": "入职添加按钮",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "ruzhi:add:back",
-        "describe": "java添加请求注解",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "ruzhi:form:name",
-        "describe": "表单的入职人员字段控制",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "ruzhi:form:sex",
-        "describe": "入职表单性别",
-        "type": "2",
-        "status": "1"
-      },
-      {
-        "action": "user:form:phone",
-        "describe": "手机号禁用",
-        "type": "2",
-        "status": "1"
-      },
-      {
-        "action": "online:air_china_persion_config:post",
-        "describe": "用户岗位禁用",
-        "type": "2",
-        "status": "1"
-      },
-      {
-        "action": "sys:user:list",
-        "describe": "用户列表数据",
-        "type": "1",
-        "status": "0"
-      },
-      {
-        "action": null,
-        "describe": "个人标准积分配置权限",
-        "type": "0",
-        "status": "1"
-      },
-      {
-        "action": "sysMessageTemplate:delete",
-        "describe": "删除权限",
-        "type": null,
-        "status": "1"
-      },
-      {
-        "action": "user:add",
-        "describe": "添加用户",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "online:air_china_persion_config:account",
-        "describe": "用户账号显示",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "user:edit",
-        "describe": "编辑用户",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "user:syncbpm",
-        "describe": "同步流程",
-        "type": "1",
-        "status": "1"
-      },
-      {
-        "action": "user:import",
-        "describe": "导入请求",
-        "type": "1",
-        "status": "1"
-      }
-    ],
-    "auth": [
-      {
-        "action": "online:ceshi_ruzhi:add",
-        "describe": "列表添加按钮",
-        "type": "1"
-      },
-      {
-        "action": "online:ceshi_ruzhi:gwei",
-        "describe": "岗位字段控制",
-        "type": "1"
-      },
-      {
-        "action": "online:ceshi_ruzhi:export",
-        "describe": "列表导出按钮",
-        "type": "1"
-      },
-      {
-        "action": "online:ceshi_ruzhi:ruz_date",
-        "describe": "入职时间",
-        "type": "2"
-      },
-      {
-        "action": null,
-        "describe": "入职加载数据请求地址",
-        "type": "1"
-      }
-    ],
+    "allAuth": [],
+    "auth": [],
     "menu": [
       {
         "redirect": null,
@@ -220,6 +67,46 @@ let getUserPermissionByToken = {
         },
         "name": "dashboard-analysis",
         "id": "9502685863ab87f0ad1134142788a385"
+      },
+      {
+        "redirect": "2",
+        "path": "/desform",
+        "component": "layouts/RouteView",
+        "route": "1",
+        "children": [
+          {
+            "path": "/online/desform",
+            "component": "desform/DesignFormList",
+            "route": "1",
+            "meta": {
+              "keepAlive": true,
+              "internalOrExternal": false,
+              "title": "表单设计器"
+            },
+            "name": "online-desform",
+            "id": "c3b050978256957869d860d066bf4049"
+          },
+          {
+            "path": "/desform/preview",
+            "component": "desform/DesignPreview",
+            "route": "1",
+            "meta": {
+              "keepAlive": true,
+              "internalOrExternal": false,
+              "title": "表单渲染器"
+            },
+            "name": "DesignPreview",
+            "id": "c3b050978256957869d860d066bf4050"
+          }
+        ],
+        "meta": {
+          "keepAlive": false,
+          "internalOrExternal": false,
+          "icon": "gold",
+          "title": "表单设计"
+        },
+        "name": "desform",
+        "id": "98ab93226c45e39dc2bc9aa67b377183"
       },
       {
         "redirect": null,
