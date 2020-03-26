@@ -1,5 +1,6 @@
 import ItemIcon from './ItemIcon';
 import input from './control/Input';
+import number from './control/Number';
 import checkbox from './control/CheckBox';
 import radio from './control/Radio';
 import select from './control/Select';
@@ -19,6 +20,7 @@ const form_item = {
   hr,
   p,
   input,
+  number,
   select,
   radio,
   checkbox,

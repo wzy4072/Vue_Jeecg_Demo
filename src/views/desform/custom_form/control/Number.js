@@ -1,12 +1,14 @@
 export default (_self, h) => {
   let conf = _self.conf
-
   return [
-    h('AInput', {
+    h('AInputNumber', {
       props: {
         placeholder: conf.placeholder,
         disabled: conf.disabled,
-        allowClear: conf.allowClear
+        min: conf.min,
+        max: conf.max,
+        size: conf.size,
+        step: conf.step
       },
       directives: [
         {
@@ -24,7 +26,7 @@ export default (_self, h) => {
 
 export let inputConf = {
   // 对应数据库内类型
-  type: 'input',
+  type: 'number',
   // 是否可配置
   config: true,
   // 控件左侧label内容

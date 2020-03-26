@@ -235,6 +235,22 @@
             </a-row>
           </a-tab-pane>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
           <a-tab-pane tab="银行账户资料" key="2">
             <a-row>
               <a-col :span="24">
@@ -793,16 +809,16 @@
   </a-modal>
 </template>
 <script>
-import { log } from 'util'
-import Vue from 'vue'
-import { USER_INFO } from '@/store/mutation-types'
-import moment from 'moment'
-import { getAction, postAction } from '@/api/manage'
-// import { addressCode } from '../static/shbank/address.list'
-import { customerType } from '../static/shbank/custType.list'
-import { industry } from '../static/shbank/industry.list'
-import { liquidation } from '../static/shbank/liquidation.list'
-import { get } from 'http'
+// import { log } from 'util'
+// import Vue from 'vue'
+// import { USER_INFO } from '@/store/mutation-types'
+// import moment from 'moment'
+// import { getAction, postAction } from '@/api/manage'
+// // import { addressCode } from '../static/shbank/address.list'
+// import { customerType } from '../static/shbank/custType.list'
+// import { industry } from '../static/shbank/industry.list'
+// import { liquidation } from '../static/shbank/liquidation.list'
+// import { get } from 'http'
 
 function isLeaf(list) {
   list.map(item => {
@@ -910,7 +926,7 @@ export default {
     tabsChange(k) {
       if (this.visitedTab.indexOf(k) == -1) this.visitedTab.push(k)
     },
-    haveFile(key) {
+    decorator(key) {
       let files = this.form.getFieldValue(key)
       if (files && files.length > 0) {
         return true

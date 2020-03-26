@@ -6,16 +6,24 @@ export default (_self, h) => {
     return h('AButton', {}, [h('AIcon', { props: { type: 'upload' } }), '上传'])
   }
 
+  function getFileInfo(file) {
+    return {
+      uid: file.uid,
+      name: file.name,
+      status: file.status,
+      response: file.response
+    }
+  }
+
 
 
   let conf = _self.conf
   function normFile(e) {
-    console.log('Upload event:', e)
-    if (Array.isArray(e)) {
-      return e.length > 0 ? [e[e.length - 1]] : []
-    }
-    let fileList = e.fileList
-    return fileList.length > 0 ? [fileList[fileList.length - 1]] : []
+    let fileList = Array.isArray(e) ? e : e.fileList
+    // return fileList;
+    // 只允许单个文件，替换动作
+    // 只保存文件ID信息 减少对象体积
+    return fileList.length > 0 ? [getFileInfo(fileList.slice(-1))] : []
   }
   return [
     h('AUpload', {
@@ -43,6 +51,18 @@ export default (_self, h) => {
     )
   ]
 }
+
+// initialValue/上传数据的 格式
+// [
+//   {
+//     uid: "xxx",
+//     name: "XXX文件.png",
+//     status: "done",
+//     response: {
+//       data: { id: "666" }
+//     }
+//   }
+// ]
 
 
 export const uploadsConf = {

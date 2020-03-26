@@ -1,22 +1,36 @@
 import moment from 'moment';
 export default (_self, h) => {
+  let conf = _self.conf
+  let dateLimit = {
+    disabledDateBefore(current) {
+      //只能选择当前日期前的日期
+
+      return current && current > moment().endOf('day')
+    },
+    disabledDateAfter(current) {
+      //只能选择当前日期后的日期
+      return current && current < moment().endOf('day')
+    }
+  }
+
+
   return [
-    h('DatePicker', {
+    h('ADatePicker', {
       props: {
-        placeholder: _self.obj.placeholder || (_self.obj.name ? "" : "请选择日期"),
-        type: (!_self.obj.format || _self.obj.format == 'yyyy年MM月dd日') ? 'date' : 'datetime',
-        format: _self.obj.format || 'yyyy年MM月dd日',
-        value: _self.obj.value
+        placeholder: conf.placeholder || "请选择日期",
+        disabledDate: dateLimit[conf.disabledDate] || null,
+        format: conf.dateFormat,
+        // open:false
       },
-      on: {
-        "on-change" (arr) {
-          if (!_self.obj.name) {
-            return false;
-          }
-          _self.obj.value = arr;
-          _self.$emit('handleChangeVal', arr)
+      directives: [
+        {
+          name: "decorator",
+          value: [
+            conf.name,
+            { rules: conf.rules, initialValue: _self.initialValue[conf.name] }
+          ]
         }
-      }
+      ]
     })
   ]
 }

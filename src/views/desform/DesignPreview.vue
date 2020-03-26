@@ -28,6 +28,21 @@
 
 <script>
 import shBankConf from "./config01";
+import moment from "moment";
+
+// 处理日期字段格式
+function transformDate(confs, values) {
+  confs.map(conf => {
+    if (conf.type == "datepicker") {
+      let dateValue = values[conf.name];
+      values[conf.name] = dateValue
+        ? dateValue.format(conf.dateValueFormat)
+        : null;
+    }
+  });
+  return values;
+}
+
 export default {
   data() {
     return {
@@ -49,7 +64,13 @@ export default {
               data: { id: "666" }
             }
           }
-        ]
+        ],
+        // 日期 需要根据配置文件查找字段 格式 转换为moment对象
+        companyFoundDate: moment("2020-03-20", "YYYY-MM-DD"),
+        confirmationDate: moment("2020-03-20", "YYYY-MM-DD"),
+        scopeOfBus:666,
+        agreementMoney:20,
+        comDibilityLimit:'T'
       }
     };
   },
@@ -59,10 +80,13 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
+          // 处理日期字段格式
+          values = transformDate(this.formConfs, values);
           console.log("Received values of form: ", values);
         }
       });
     },
+
     handleChangeVal(v, e) {
       console.log(v, e);
     }
