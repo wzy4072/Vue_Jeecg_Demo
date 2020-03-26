@@ -36,7 +36,7 @@ export default [
         wrapperCol: null, // FormItem
         trigger: null, // FormItem
         // 几种类型 1 选项给定
-        // selectOptionType: 1,
+        selectOptionType: 1,
         options: [
             { label: 'label A', value: 'A' },
             { label: 'label C', value: 'C' },
@@ -183,9 +183,8 @@ export default [
         wrapperCol: null, // FormItem
         trigger: null, // FormItem
     },
-
     {
-        type: 'select',
+        type: 'AsyncSelect',
         name: 'comDibilityLimit',
         label: '企业规模',
         config: false,
@@ -196,15 +195,9 @@ export default [
         wrapperCol: null, // FormItem
         trigger: null, // FormItem
         // 几种类型 1 选项给定
-        // selectOptionType: 1,
-
-        //------------------改为枚举
-        options: [
-            { label: '少于15人', value: 'T' },
-            { label: '15-150人', value: 'S' },
-            { label: '150-2000人', value: 'M' },
-            { label: '2000人以上', value: 'L' },
-        ]
+        // 几种类型 1 选项给定
+        selectOptionType: 2,
+        selectOptionEnumCode: 'em_code'
     },
 
 

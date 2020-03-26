@@ -12,8 +12,8 @@ import p from './control/P';
 import uploads from './control/Uploads';
 import datepicker from './control/DatePicker';
 import address from './control/Address';
-
 import trigger from './config/trigger';
+import AsyncComponent from './control/AsyncComponent.vue'
 
 const form_item = {
   title,
@@ -53,10 +53,12 @@ const displayControl = (_self, sortableItem, name, value) => {
 
 export default {
   name: 'renders',
+  components: { AsyncComponent },
   render(h) {
     var $this = this;
     // 获取当前控件渲染
     const arr = (form_item[this.conf.type.toLowerCase()] && form_item[this.conf.type.toLowerCase()](this, h)) || [];
+
     // 拥有绑定的值，需回填到控件
     this.$set(this.conf, 'value', typeof this.value !== "undefined" ? this.value : this.conf.value);
     // 显示配置按钮并且控件允许被配置
@@ -81,8 +83,10 @@ export default {
           trigger: this.conf.trigger || 'change'
         }
       };
-      return h("AFormItem", FormItem, arr.concat(item_icon)
-      );
+      if (this.conf.type == 'AsyncSelect') {
+        return h("AFormItem", FormItem, [<AsyncComponent conf={this.conf} initialValue={this.initialValue}></AsyncComponent>])
+      }
+      return h("AFormItem", FormItem, arr.concat(item_icon));
     } else {
       return h(
         "div", {

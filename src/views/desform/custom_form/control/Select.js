@@ -1,6 +1,21 @@
+
+
 export default (_self, h) => {
   let conf = _self.conf
+  let labelName = 'label'
+  let valueName = 'value'
+  let optionNodes = conf.options.map(v => {
+    return h(
+      "ASelectOption", {
+      props: {
+        value: "" + v[valueName]
+      },
+    },
+      v[labelName]
+    );
+  })
 
+  // 携带了OPTIONS的
   return [
     h(
       "ASelect", {
@@ -17,19 +32,17 @@ export default (_self, h) => {
         }
       ]
     },
-      conf.options.map(v => {
-        return h(
-          "ASelectOption", {
-          props: {
-            value: "" + v.value
-          },
-        },
-          v.label
-        );
-      })
+      optionNodes
     )
   ];
 };
+
+/**
+ * 
+ * selectOptionType: 1
+ * 1 携带OPTIONS
+ * 2 使用云平台字典枚举
+ */
 
 export let selectConf = {
   // 对应数据库内类型

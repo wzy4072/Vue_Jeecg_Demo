@@ -23,12 +23,38 @@
     </a-form>
     <!-- <hr />
     {{formConfs}}-->
+
+    <a-button type="primary" @click="test">test</a-button>
   </div>
 </template>
 
 <script>
 import shBankConf from "./config01";
 import moment from "moment";
+let resInitialValue = {
+  facilitatorName: "上海银行",
+  companyName: "上海银行集团股份公司",
+  agreementType: "A",
+  agreementNumber: "91440400337919362H",
+  // 91440400337919362L
+  companyDesc: "No English Name",
+  companyImgID: [
+    {
+      uid: "xxx",
+      name: "XXX文件",
+      status: "done",
+      response: {
+        data: { id: "666" }
+      }
+    }
+  ],
+  // 日期 需要根据配置文件查找字段 格式 转换为moment对象
+  companyFoundDate: moment("2020-03-20", "YYYY-MM-DD"),
+  confirmationDate: moment("2020-03-20", "YYYY-MM-DD"),
+  scopeOfBus: 666,
+  agreementMoney: 20,
+  comDibilityLimit: "T"
+};
 
 // 处理日期字段格式
 function transformDate(confs, values) {
@@ -46,36 +72,21 @@ function transformDate(confs, values) {
 export default {
   data() {
     return {
-      formConfs: shBankConf,
+      formConfs: [],
       form: this.$form.createForm(this),
-      initialValue: {
-        facilitatorName: "上海银行",
-        companyName: "上海银行集团股份公司",
-        agreementType: "A",
-        agreementNumber: "91440400337919362H",
-        // 91440400337919362L
-        companyDesc: "No English Name",
-        companyImgID: [
-          {
-            uid: "xxx",
-            name: "XXX文件",
-            status: "done",
-            response: {
-              data: { id: "666" }
-            }
-          }
-        ],
-        // 日期 需要根据配置文件查找字段 格式 转换为moment对象
-        companyFoundDate: moment("2020-03-20", "YYYY-MM-DD"),
-        confirmationDate: moment("2020-03-20", "YYYY-MM-DD"),
-        scopeOfBus:666,
-        agreementMoney:20,
-        comDibilityLimit:'T'
-      }
+      initialValue: {}
     };
   },
-  mounted() {},
+  mounted() {
+    this.asyncGetValue();
+  },
   methods: {
+    asyncGetValue() {
+      setTimeout(() => {
+        this.formConfs = shBankConf;
+        this.initialValue = resInitialValue;
+      }, 500);
+    },
     handleSubmit(e) {
       e.preventDefault();
       this.form.validateFields((err, values) => {
@@ -89,7 +100,8 @@ export default {
 
     handleChangeVal(v, e) {
       console.log(v, e);
-    }
+    },
+    test() {}
   }
 };
 </script>
