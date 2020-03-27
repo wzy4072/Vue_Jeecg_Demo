@@ -1,5 +1,5 @@
 <template>
-  <a-select @change="handleChange" defaultValue="T">
+  <a-select @change="handleChange" :defaultValue="value">
     <a-select-option v-for="item in options" :key="item.evalue" :value="item.evalue">{{item.ename}}</a-select-option>
   </a-select>
 </template>

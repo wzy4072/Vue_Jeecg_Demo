@@ -226,12 +226,12 @@
 <script>
 import draggable from "vuedraggable";
 import form_list from "./custom_form/FormList";
-import TempRender from "./custom_form/tempRender";
+// import TempRender from "./custom_form/tempRender";
 let uniId = 100;
 export default {
   components: {
     draggable,
-    TempRender
+    // TempRender
   },
   data() {
     return {

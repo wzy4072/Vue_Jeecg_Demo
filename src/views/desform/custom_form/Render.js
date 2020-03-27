@@ -13,8 +13,8 @@ import uploads from './control/Uploads';
 import datepicker from './control/DatePicker';
 import address from './control/Address';
 import trigger from './config/trigger';
-import AsyncComponent from './control/AsyncComponent.vue'
-import AsyncSelect from "./control/AsyncSelect";
+// import AsyncComponent from './control/AsyncComponent.vue' // 
+import AsyncSelect from "./components/AsyncSelect"; // 枚举下拉
 
 const form_item = {
   title,
@@ -54,7 +54,7 @@ const displayControl = (_self, sortableItem, name, value) => {
 
 export default {
   name: 'renders',
-  components: { AsyncComponent, AsyncSelect },
+  components: { AsyncSelect },
   render(h) {
     var $this = this;
     // 获取当前控件渲染
@@ -85,8 +85,21 @@ export default {
         }
       };
       if (this.conf.type == 'AsyncSelect') {
-
-        return h("AFormItem", FormItem, [<AsyncComponent conf={this.conf} initialValue={this.initialValue} v-decorator={[this.conf.name, { rules: this.conf.rules, initialValue: this.initialValue[this.conf.name] }]}></AsyncComponent>])
+        let AnyNode = h(this.conf.type, {
+          props: {
+            conf: this.conf
+          },
+          directives: [
+            {
+              name: "decorator",
+              value: [
+                this.conf.name,
+                { rules: this.conf.rules || null, initialValue: this.initialValue[this.conf.name] }
+              ]
+            }
+          ]
+        })
+        return h("AFormItem", FormItem, [AnyNode])
       }
       return h("AFormItem", FormItem, arr.concat(item_icon));
     } else {
