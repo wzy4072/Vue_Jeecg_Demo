@@ -15,6 +15,7 @@ import address from './control/Address';
 import trigger from './config/trigger';
 // import AsyncComponent from './control/AsyncComponent.vue' // 
 import AsyncSelect from "./components/AsyncSelect"; // 枚举下拉
+import AddressCascader from './components/AddressCascader'//省市区街级联
 
 const form_item = {
   title,
@@ -54,7 +55,7 @@ const displayControl = (_self, sortableItem, name, value) => {
 
 export default {
   name: 'renders',
-  components: { AsyncSelect },
+  components: { AsyncSelect, AddressCascader },
   render(h) {
     var $this = this;
     // 获取当前控件渲染
@@ -84,10 +85,15 @@ export default {
           trigger: this.conf.trigger || 'change'
         }
       };
-      if (this.conf.type == 'AsyncSelect') {
+
+
+
+      if (['AsyncSelect', 'AddressCascader'].includes(this.conf.type)) {
+        // params 目前只有 AddressCascader 请求时需要传递 financeNo
         let AnyNode = h(this.conf.type, {
           props: {
-            conf: this.conf
+            conf: this.conf,
+            params: this.params
           },
           directives: [
             {
@@ -119,6 +125,12 @@ export default {
   props: {
     // 当前控件的配置
     conf: {
+      type: Object,
+      default() {
+        return {};
+      }
+    },
+    params: {
       type: Object,
       default() {
         return {};

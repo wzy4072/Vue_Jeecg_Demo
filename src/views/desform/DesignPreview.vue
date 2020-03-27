@@ -15,6 +15,7 @@
         :initialValue="initialValue"
         @handleChangeVal="val => handleChangeVal(val,element)"
         :sortableItem="formConfs"
+        :params="params"
       ></renders>
 
       <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
@@ -56,7 +57,8 @@ let resInitialValue = {
   comDibilityLimit: "T",
   custType: "3012",
   industry: "A0132",
-  depositHuman: "02"
+  depositHuman: "02",
+  resDistList: ["130000000000", "130600000000", "130604000000", "130604001000"]
 };
 
 // 处理日期字段格式
@@ -77,7 +79,10 @@ export default {
     return {
       formConfs: [],
       form: this.$form.createForm(this),
-      initialValue: {}
+      initialValue: {},
+      params: {
+        financeNo: "SHBankW2009901A"
+      }
     };
   },
   mounted() {

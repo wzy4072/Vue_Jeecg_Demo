@@ -246,4 +246,18 @@ export default [
         trigger: null, // FormItem
         selectOptionEnumCode: 'em_name4'
     },
+    {
+        type: 'AddressCascader', // 地区级联
+        name: 'resDistList',
+        label: '企业注册地址省市区代码',
+        config: false,
+        disabled: true, // 是否禁用
+        placeholder: '企业注册地址省市区代码',
+        rules: [{ required: true, message: '请选择企业注册地址省市区代码' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+
+
 ]
