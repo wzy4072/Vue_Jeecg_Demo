@@ -94,7 +94,7 @@ export default {
               name: "decorator",
               value: [
                 this.conf.name,
-                { rules: this.conf.rules || null, initialValue: this.initialValue[this.conf.name] }
+                { rules: this.conf.rules || [], initialValue: this.initialValue[this.conf.name] }
               ]
             }
           ]

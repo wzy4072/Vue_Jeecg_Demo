@@ -36,7 +36,7 @@ export default [
         wrapperCol: null, // FormItem
         trigger: null, // FormItem
         // 几种类型 1 选项给定
-        selectOptionType: 1,
+        // selectOptionType: 1,
         options: [
             { label: 'label A', value: 'A' },
             { label: 'label C', value: 'C' },
@@ -196,9 +196,54 @@ export default [
         trigger: null, // FormItem
         // 几种类型 1 选项给定
         // 几种类型 1 选项给定
-        selectOptionType: 2,
-        selectOptionEnumCode: 'em_code'
+        // selectOptionType: 2,
+        selectOptionEnumCode: 'em_name1'
     },
-
-
+    {
+        type: 'AsyncSelect',
+        name: 'custType',
+        label: '客户类别',
+        config: false,
+        disabled: true, // 是否禁用
+        placeholder: '客户类别，无法确认则选择其他责任公司',
+        rules: [{ required: true, message: '请选择客户类别' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+        // 几种类型 1 选项给定
+        // 几种类型 1 选项给定
+        // selectOptionType: 2,
+        selectOptionEnumCode: 'em_name2'
+    },
+    {
+        type: 'AsyncSelect',
+        name: 'industry',
+        label: '行业类别',
+        config: false,
+        disabled: true, // 是否禁用
+        placeholder: '行业类别',
+        rules: [{ required: true, message: '请选择行业类别' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+        // 几种类型 1 选项给定
+        // 几种类型 1 选项给定
+        // selectOptionType: 2,
+        selectOptionEnumCode: 'em_name3',
+        showSearch: true, // select 搜索类型 第三种搜索类型
+        showArrow: false // select 下拉小箭头 
+    },
+    {
+        type: 'AsyncSelect',
+        name: 'depositHuman',
+        label: '存款人类别',
+        config: false,
+        disabled: true, // 是否禁用
+        placeholder: '存款人类别',
+        rules: [{ required: true, message: '请选择存款人类别' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+        selectOptionEnumCode: 'em_name4'
+    },
 ]

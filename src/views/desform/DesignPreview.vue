@@ -53,7 +53,10 @@ let resInitialValue = {
   confirmationDate: moment("2020-03-20", "YYYY-MM-DD"),
   scopeOfBus: 666,
   agreementMoney: 20,
-  comDibilityLimit: "T"
+  comDibilityLimit: "T",
+  custType: "3012",
+  industry: "A0132",
+  depositHuman: "02"
 };
 
 // 处理日期字段格式
