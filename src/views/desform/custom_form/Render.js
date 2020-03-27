@@ -14,6 +14,7 @@ import datepicker from './control/DatePicker';
 import address from './control/Address';
 import trigger from './config/trigger';
 import AsyncComponent from './control/AsyncComponent.vue'
+import AsyncSelect from "./control/AsyncSelect";
 
 const form_item = {
   title,
@@ -53,7 +54,7 @@ const displayControl = (_self, sortableItem, name, value) => {
 
 export default {
   name: 'renders',
-  components: { AsyncComponent },
+  components: { AsyncComponent, AsyncSelect },
   render(h) {
     var $this = this;
     // 获取当前控件渲染
@@ -84,7 +85,8 @@ export default {
         }
       };
       if (this.conf.type == 'AsyncSelect') {
-        return h("AFormItem", FormItem, [<AsyncComponent conf={this.conf} initialValue={this.initialValue}></AsyncComponent>])
+
+        return h("AFormItem", FormItem, [<AsyncComponent conf={this.conf} initialValue={this.initialValue} v-decorator={[this.conf.name, { rules: this.conf.rules, initialValue: this.initialValue[this.conf.name] }]}></AsyncComponent>])
       }
       return h("AFormItem", FormItem, arr.concat(item_icon));
     } else {

@@ -1,16 +1,5 @@
 <template>
-  <!-- <div>
-    {{conf.rules}}
-    {{conf.name}}
-    {{initialValue[conf.name]}}
-    <hr />conf.rules
-    conf.name
-    initialValue[conf.name]
-  </div>-->
-  <a-select
-    :placeholder="conf.placeholder"
-    v-decorator="[ conf.name, {rules: conf.rules ,initialValue: initialValue[conf.name]}]"
-  >
+  <a-select @change="handleChange" defaultValue="T">
     <a-select-option v-for="item in options" :key="item.evalue" :value="item.evalue">{{item.ename}}</a-select-option>
   </a-select>
 </template>
@@ -24,9 +13,10 @@ export default {
       type: Object,
       required: true
     },
-    initialValue: {
-      type: Object,
-      required: true
+    value: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   data() {
@@ -40,7 +30,11 @@ export default {
       console.log("this.options", this.options);
     });
   },
-  methods: {}
+  methods: {
+    handleChange(v) {
+      this.$emit("change", v);
+    }
+  }
 };
 </script>
 <style scoped>

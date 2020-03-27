@@ -101,7 +101,13 @@ export default {
     handleChangeVal(v, e) {
       console.log(v, e);
     },
-    test() {}
+    test() {
+      let { form } = this;
+      const keys = form.getFieldValue("keys");
+      form.setFieldsValue({
+        keys: keys.push("comDibilityLimit")
+      });
+    }
   }
 };
 </script>

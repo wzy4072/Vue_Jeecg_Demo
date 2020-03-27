@@ -1,5 +1,5 @@
 <template>
-  <component :is="conf.type" :conf="conf" :initialValue="initialValue"></component>
+  <component :is="conf.type" :conf="conf" :value="value" @change="handleChange"></component>
 </template>
 
 <script>
@@ -10,9 +10,10 @@ export default {
       type: Object,
       required: true
     },
-    initialValue: {
-      type: Object,
-      default: () => ({})
+    value: {
+      type: String,
+      required: false,
+      default: null
     }
   },
   components: {
@@ -22,7 +23,11 @@ export default {
     return {};
   },
   created() {},
-  methods: {}
+  methods: {
+    handleChange(v) {
+      this.$emit("change", v);
+    }
+  }
 };
 </script>
 <style scoped>
