@@ -4,6 +4,7 @@
       :form="form"
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 12 }"
+      ref="form"
       @submit="handleSubmit"
       layout="horizontal"
     >
@@ -13,7 +14,7 @@
         :index="index"
         :conf="element"
         :initialValue="initialValue"
-        @handleChangeVal="val => handleChangeVal(val,element)"
+        @change="val => handleChangeVal(val,element)"
         :sortableItem="formConfs"
         :params="params"
       ></renders>
@@ -22,14 +23,13 @@
         <a-button type="primary" html-type="submit">Submit</a-button>
       </a-form-item>
     </a-form>
-    <!-- <hr />
-    {{formConfs}}-->
-
+    <!-- {{formConfs}} -->
     <a-button type="primary" @click="test">test</a-button>
   </div>
 </template>
 
 <script>
+// import shBankConf from "./config01";
 import shBankConf from "./config01";
 import moment from "moment";
 let resInitialValue = {
@@ -58,7 +58,28 @@ let resInitialValue = {
   custType: "3012",
   industry: "A0132",
   depositHuman: "02",
-  resDistList: ["130000000000", "130600000000", "130604000000", "130604001000"]
+  resDistList: ["130000000000", "130600000000", "130604000000", "130604001000"],
+  AddressCascader: [
+    "130000000000",
+    "130600000000",
+    "130604000000",
+    "130604001000"
+  ],
+  regTePhone: "13212345678",
+  workDistList: [
+    "130000000000",
+    "130600000000",
+    "130604000000",
+    "130604001000"
+  ],
+  regStrentDoor: [
+    "130000000000",
+    "130600000000",
+    "130604000000",
+    "130604001000"
+  ],
+  appApplyType: "1",
+  cfoType: "1"
 };
 
 // 处理日期字段格式
@@ -73,6 +94,118 @@ function transformDate(confs, values) {
   });
   return values;
 }
+
+//  法人亲办、法人兼任财务主管的情况，经办人以及财务主管身份证正反面影像资料文件名称非必输；
+//  法人亲办、他人兼任财务主管的情况，财务主管身份证正反面影像资料文件名称必输，经办人身份证正反面影像资料文件名称非必输；
+//  授权经办、法人兼任财务主管的情况，经办人身份证正反面影像资料文件名称必输，财务主管身份证正反面影像资料文件名称非必输；
+//  授权经办、经办人兼财务主管的情况，经办人身份证正反面影像资料文件名称必输，财务主管身份证正反面影像资料文件名称非必输；
+//  授权经办、他人兼财务主管的情况，经办人以及财务主管身份证正反面影像资料文件名称必输；
+let formRelevanceConfig = [
+  {
+    rules: [
+      { name: "appApplyType", value: "1" },
+      { name: "cfoType", value: "1" }
+    ],
+    relevance: "and",
+    result: [
+      {
+        name: "cfoName",
+        rules: [{ required: false, message: "请输入财务主管姓名" }]
+      },
+      {
+        name: "checkerName",
+        rules: [{ required: false, message: "请输入经办人姓名" }]
+      }
+    ]
+  },
+  {
+    rules: [
+      { name: "appApplyType", value: "1" },
+      { name: "cfoType", value: "2" }
+    ],
+    relevance: "and",
+    result: [
+      {
+        name: "cfoName",
+        rules: [{ required: true, message: "请输入财务主管姓名" }]
+      },
+      {
+        name: "checkerName",
+        rules: [{ required: false, message: "请输入经办人姓名" }]
+      }
+    ]
+  },
+
+  {
+    rules: [
+      { name: "appApplyType", value: "1" },
+      { name: "cfoType", value: "3" }
+    ],
+    relevance: "and",
+    result: [
+      {
+        name: "cfoName",
+        rules: [{ required: true, message: "请输入财务主管姓名" }]
+      },
+      {
+        name: "checkerName",
+        rules: [{ required: false, message: "请输入经办人姓名" }]
+      }
+    ]
+  },
+
+  {
+    rules: [
+      { name: "appApplyType", value: "2" },
+      { name: "cfoType", value: "1" }
+    ],
+    relevance: "and",
+    result: [
+      {
+        name: "cfoName",
+        rules: [{ required: false, message: "请输入财务主管姓名" }]
+      },
+      {
+        name: "checkerName",
+        rules: [{ required: true, message: "请输入经办人姓名" }]
+      }
+    ]
+  },
+  {
+    rules: [
+      { name: "appApplyType", value: "2" },
+      { name: "cfoType", value: "2" }
+    ],
+    relevance: "and",
+    result: [
+      {
+        name: "cfoName",
+        rules: [{ required: false, message: "请输入财务主管姓名" }]
+      },
+      {
+        name: "checkerName",
+        rules: [{ required: true, message: "请输入经办人姓名" }]
+      }
+    ]
+  },
+  {
+    rules: [
+      { name: "appApplyType", value: "2" },
+      { name: "cfoType", value: "3" }
+    ],
+    relevance: "and",
+    result: [
+      {
+        name: "cfoName",
+        rules: [{ required: true, message: "请输入财务主管姓名" }]
+      },
+      {
+        name: "checkerName",
+        rules: [{ required: true, message: "请输入经办人姓名" }]
+      }
+    ]
+  }
+];
 
 export default {
   data() {
@@ -105,16 +238,55 @@ export default {
         }
       });
     },
-
+    setCongValue(arr, confSet) {
+      for (let i = 0; i < arr.length; i++) {
+        const conf = arr[i];
+        if (conf.hasOwnProperty("panes")) {
+          conf.panes = this.setCongValue(conf.panes, confSet);
+        }
+        if (conf.hasOwnProperty("columns")) {
+          conf.columns = this.setCongValue(conf.columns, confSet);
+        }
+        if (conf.hasOwnProperty("list")) {
+          conf.list = this.setCongValue(conf.list, confSet);
+        }
+        if (conf.name === confSet.name) {
+          // arr[i] = Object.assign({}, conf, confSet);
+          arr[i].rules = JSON.parse(JSON.stringify(confSet.rules));
+          console.log("confSet", confSet.rules[0].required);
+          console.log("arr[i]", arr[i].rules[0].required);
+          break;
+        }
+      }
+      return arr;
+    },
     handleChangeVal(v, e) {
-      console.log(v, e);
+      this.$nextTick(() => {
+        if (["appApplyType", "cfoType"].includes(v.name)) {
+          // 处理联动
+          formRelevanceConfig.map(item => {
+            let rulesRes = item.rules.map(rule => {
+              return this.form.getFieldValue(rule.name) === rule.value;
+            });
+            if (
+              (item.relevance === "or" && rulesRes.includes(true)) ||
+              (item.relevance === "and" && !rulesRes.includes(false))
+            ) {
+              // 执行
+              item.result.map(set => {
+                this.formConfs = this.setCongValue(this.formConfs, set);
+              });
+              this.form.validateFields((err, values) => {});
+            }
+          });
+        }
+      });
+      // console.log("DesignPreview_handleChangeVal");
+      // console.log(v, e);
     },
     test() {
       let { form } = this;
-      const keys = form.getFieldValue("keys");
-      form.setFieldsValue({
-        keys: keys.push("comDibilityLimit")
-      });
+      form.setFields();
     }
   }
 };

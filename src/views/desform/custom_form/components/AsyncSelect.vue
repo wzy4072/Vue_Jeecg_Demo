@@ -54,6 +54,7 @@ export default {
   },
   methods: {
     handleChange(v) {
+      // console.log("AsyncSelect change ->",v);
       this.$emit("change", v);
     },
     handleSearch(v) {

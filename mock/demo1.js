@@ -46,6 +46,16 @@ let enumItems = {
   em_name4: [
     { evalue: '01', ename: '企业法人' },
     { evalue: '02', ename: '非企业法人' }
+  ],
+  em_name5: [
+    { evalue: '1', ename: '法人亲办' },
+    { evalue: '2', ename: '授权经办' }
+  ],
+  em_name6: [
+    { evalue: '1', ename: '法人兼任' },
+    { evalue: '2', ename: '经办人兼任' },
+    { evalue: '3', ename: '其它' },
+
   ]
 }
 export default [

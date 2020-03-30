@@ -211,7 +211,7 @@
           :ele="element.ele"
           :obj="element.obj || {}"
           :initialValue="formData"
-          @handleChangeVal="val => handleChangeVal(val,element)"
+          @change="val => handleChangeVal(val,element)"
           :sortableItem="previewConf"
         ></renders>
 

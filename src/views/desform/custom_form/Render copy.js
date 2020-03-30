@@ -16,8 +16,7 @@ import trigger from './config/trigger';
 // import AsyncComponent from './control/AsyncComponent.vue' // 
 import AsyncSelect from "./components/AsyncSelect"; // 枚举下拉
 import AddressCascader from './components/AddressCascader'//省市区街级联
-import Grid from './components/Grid'
-import Tabs from './components/Tabs'
+
 const form_item = {
   title,
   hr,
@@ -56,47 +55,72 @@ const displayControl = (_self, sortableItem, name, value) => {
 
 export default {
   name: 'renders',
-  components: { AsyncSelect, AddressCascader, Grid, Tabs },
+  components: { AsyncSelect, AddressCascader },
   render(h) {
+    var $this = this;
     // 获取当前控件渲染
     const arr = (form_item[this.conf.type.toLowerCase()] && form_item[this.conf.type.toLowerCase()](this, h)) || [];
-    const item_icon = this.configIcon && this.conf.config ? ItemIcon(this, h) : [];
-    let FormItem = {
-      props: {
-        label: this.conf.label ? this.conf.label + '：' : '',
-        labelCol: this.conf.labelCol || { span: 5 },  // 局部覆盖全局
-        wrapperCol: this.conf.wrapperCol || { span: 12 }, // 局部覆盖全局
-        trigger: this.conf.trigger || 'change'
-      }
-    };
-    if (['grid', 'tabs'].includes(this.conf.type)) {
-      const tagName = this.conf.type
-      return <tagName conf={this.conf} params={this.params} initialValue={this.initialValue} onchange={(v) => { this.$emit('change', v) }}></tagName>
-    }
 
-    if (['AsyncSelect', 'AddressCascader'].includes(this.conf.type)) {
-      // params 目前只有 AddressCascader 请求时需要传递 financeNo
-      let AnyNode = h(this.conf.type, {
+    // 拥有绑定的值，需回填到控件
+    this.$set(this.conf, 'value', typeof this.value !== "undefined" ? this.value : this.conf.value);
+    // 显示配置按钮并且控件允许被配置
+    const item_icon = this.configIcon && this.conf.config ? ItemIcon(this, h) : [];
+    // 已被绑定name,且require为必填,视为校验字段
+    const validate = !!this.conf.name && !!this.conf.require;
+    // 非 Title Hr P 需要FormItem
+    if (['title', 'hr', 'p'].indexOf((this.conf.type.toLowerCase())) < 0) {
+      // 关联的组件判断是否展示
+      if (this.conf.relation && !displayControl(this, this.sortableItem, this.conf.relation_name, this.conf.relation_value)) {
+        // 隐藏该控件并设置该控件标记为隐藏
+        this.$emit('changeVisibility', this.index, false);
+        return h("span");
+      }
+      // 设置该控件标记为显示
+      this.$emit('changeVisibility', this.index, true);
+      let FormItem = {
         props: {
-          conf: this.conf,
-          params: this.params
+          label: this.conf.label ? this.conf.label + '：' : '',
+          labelCol: this.conf.labelCol || { span: 5 },  // 局部覆盖全局
+          wrapperCol: this.conf.wrapperCol || { span: 12 }, // 局部覆盖全局
+          trigger: this.conf.trigger || 'change'
+        }
+      };
+
+
+
+      if (['AsyncSelect', 'AddressCascader'].includes(this.conf.type)) {
+        // params 目前只有 AddressCascader 请求时需要传递 financeNo
+        let AnyNode = h(this.conf.type, {
+          props: {
+            conf: this.conf,
+            params: this.params
+          },
+          directives: [
+            {
+              name: "decorator",
+              value: [
+                this.conf.name,
+                { rules: this.conf.rules || [], initialValue: this.initialValue[this.conf.name] }
+              ]
+            }
+          ]
+        })
+        return h("AFormItem", FormItem, [AnyNode])
+      }
+      return h("AFormItem", FormItem, arr.concat(item_icon));
+    } else {
+      return h(
+        "div", {
+        style: {
+          'position': 'relative'
         },
-        on: {
-          change: (v) => { this.$emit('change', { name: this.conf.name, value: v }) }
+        class: {
+          items: true
         },
-        directives: [
-          {
-            name: "decorator",
-            value: [
-              this.conf.name,
-              { rules: this.conf.rules || [], initialValue: this.initialValue[this.conf.name] }
-            ]
-          }
-        ]
-      })
-      return h("AFormItem", FormItem, [AnyNode])
+      },
+        arr.concat(item_icon)
+      );
     }
-    return h("AFormItem", FormItem, arr.concat(item_icon));
   },
   props: {
     // 当前控件的配置
