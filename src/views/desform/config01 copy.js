@@ -317,5 +317,247 @@ export default [
         labelCol: null, // FormItem
         wrapperCol: null, // FormItem
         trigger: null, // FormItem
-    }
+    },
+    //------------------------------------------ tab6
+
+    {
+        type: 'AsyncSelect',
+        name: 'appApplyType',
+        label: '办理类型',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: '办理类型',
+        rules: [{ required: true, message: '请选择办理类型' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+        selectOptionEnumCode: 'em_name5'
+    },
+
+    {
+        type: 'AsyncSelect',
+        name: 'cfoType',
+        label: '财务主管类型',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: '办理类型',
+        rules: [{ required: true, message: '请选择财务主管类型' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+        selectOptionEnumCode: 'em_name6'
+    },
+    {
+        type: 'input',
+        name: 'cfoName',
+        label: '财务主管姓名',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: '请输入财务主管姓名',
+        rules: [{ required: true, message: '请输入财务主管姓名' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+
+
+
+    {
+        type: 'input',
+        name: 'cfoIdNo',
+        label: '请输入财务主管证件号',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: '请输入财务主管证件号',
+        rules: [{ required: true, message: '请输入财务主管证件号' }, { pattern: /^(\d{15})|(\d{17}([0-9]|X))$/, message: '证件格式不正确！' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+
+    {
+        type: 'input',
+        name: 'cfoMobile',
+        label: '财务主管电话',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: '请输入财务主管电话',
+        rules: [{ required: true, message: '请输入财务主管电话' }, { pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '联系电话格式不正确！' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+
+    {
+        type: 'datepicker',
+        disabledDate: 'disabledDateBefore', // 日期独有 值是提前设定好的函数名字
+        dateFormat: 'YYYY-MM-DD', // 日期独有 显示的格式 
+        dateValueFormat: 'YYYY-MM-DD', // 日期独有 取值赋值的格式
+        name: 'cfoIdFromDate',
+        label: '财务主管身份证起始日',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: null,
+        rules: [],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+    {
+        type: 'datepicker',
+        disabledDate: 'disabledDateAfter', // 日期独有 值是提前设定好的函数名字
+        dateFormat: 'YYYY-MM-DD', // 日期独有 显示的格式 
+        dateValueFormat: 'YYYY-MM-DD', // 日期独有 取值赋值的格式
+        name: 'cfoIdLimitDate',
+        label: '财务主管证件到期日',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: null,
+        rules: [{ required: true, message: '请选择财务主管证件到期日' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+    {
+        type: 'uploads',
+        name: 'cfoIdFrontImgID',
+        label: '财务主管身份证原件正面图片',
+        fileName: 'fileInfo', // 上传专用
+        action: "/api/filesystem/attachmentInfo/uploadFile",  // 上传专用
+        headers: {
+            authorization: 'authorization-text'
+        }, // 上传专用
+        valuePropName: 'fileList',
+        config: false, // 是否是显示表单配置
+        disabled: false, // 是否禁用
+        rules: [{ required: true, message: '请上传财务主管身份证原件正面图片' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+    },
+
+    {
+        type: 'uploads',
+        name: 'cfoIdBackImgID',
+        label: '财务主管身份证原件反面图片',
+        fileName: 'fileInfo', // 上传专用
+        action: "/api/filesystem/attachmentInfo/uploadFile",  // 上传专用
+        headers: {
+            authorization: 'authorization-text'
+        }, // 上传专用
+        valuePropName: 'fileList',
+        config: false, // 是否是显示表单配置
+        disabled: false, // 是否禁用
+        rules: [{ required: true, message: '请上传财务主管身份证原件反面图片' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+    },
+
+
+    {
+        type: 'input',
+        name: 'checkerName',
+        label: '经办人姓名',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: '请输入经办人姓名',
+        rules: [{ required: true, message: '请输入经办人姓名' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+
+
+
+    {
+        type: 'input',
+        name: 'checkerIdCard',
+        label: '经办人身份证号码',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: '请输入经办人身份证号码',
+        rules: [{ required: true, message: '请输入经办人身份证号码' }, { pattern: /^(\d{15})|(\d{17}([0-9]|X))$/, message: '证件格式不正确！' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+
+    {
+        type: 'input',
+        name: 'checkerMobile',
+        label: '经办人手机号',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: '请输入经办人手机号',
+        rules: [{ required: true, message: '请输入经办人手机号' }, { pattern: /^[1][3,4,5,7,8][0-9]{9}$/, message: '联系电话格式不正确！' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+
+    {
+        type: 'datepicker',
+        disabledDate: 'disabledDateBefore', // 日期独有 值是提前设定好的函数名字
+        dateFormat: 'YYYY-MM-DD', // 日期独有 显示的格式 
+        dateValueFormat: 'YYYY-MM-DD', // 日期独有 取值赋值的格式
+        name: 'checkerIdFromDate',
+        label: '经办人身份证起始日',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: null,
+        rules: [],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+    {
+        type: 'datepicker',
+        disabledDate: 'disabledDateAfter', // 日期独有 值是提前设定好的函数名字
+        dateFormat: 'YYYY-MM-DD', // 日期独有 显示的格式 
+        dateValueFormat: 'YYYY-MM-DD', // 日期独有 取值赋值的格式
+        name: 'checkerIdLimitDate',
+        label: '经办人证件到期日证件到期日',
+        config: false,
+        disabled: false, // 是否禁用
+        placeholder: null,
+        rules: [{ required: true, message: '请选择经办人证件到期日证件到期日' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+        trigger: null, // FormItem
+    },
+    {
+        type: 'uploads',
+        name: 'checkerIdFrontImgID',
+        label: '经办人身份证原件正面图片',
+        fileName: 'fileInfo', // 上传专用
+        action: "/api/filesystem/attachmentInfo/uploadFile",  // 上传专用
+        headers: {
+            authorization: 'authorization-text'
+        }, // 上传专用
+        valuePropName: 'fileList',
+        config: false, // 是否是显示表单配置
+        disabled: false, // 是否禁用
+        rules: [{ required: true, message: '请上传经办人身份证原件正面图片' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+    },
+
+    {
+        type: 'uploads',
+        name: 'checkerIdBackImgID',
+        label: '经办人身份证原件反面图片',
+        fileName: 'fileInfo', // 上传专用
+        action: "/api/filesystem/attachmentInfo/uploadFile",  // 上传专用
+        headers: {
+            authorization: 'authorization-text'
+        }, // 上传专用
+        valuePropName: 'fileList',
+        config: false, // 是否是显示表单配置
+        disabled: false, // 是否禁用
+        rules: [{ required: true, message: '请上传经办人身份证原件反面图片' }],
+        labelCol: null, // FormItem
+        wrapperCol: null, // FormItem
+    },
+
+
+
 ]

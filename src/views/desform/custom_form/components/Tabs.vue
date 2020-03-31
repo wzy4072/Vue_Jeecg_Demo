@@ -1,6 +1,6 @@
 <template>
   <a-tabs @change="tabChange">
-    <a-tab-pane v-for="(tab) in conf.panes" :key="tab.name" :tab="tab.label">
+    <a-tab-pane v-for="(tab) in conf.list" :key="tab.name" :tab="tab.label">
       <renders
         v-for="(element,index) in tab.list"
         :key="element.type + index"

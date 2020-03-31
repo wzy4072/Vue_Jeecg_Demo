@@ -1,4 +1,7 @@
-import { industry } from './industry.list'
+import { industry } from './FormDesign2/industry.list'
+import { liquidation } from './FormDesign2/liquidation.list'
+import bankList from './FormDesign2/bankList'
+import { resInitialValue, formConfs, formRelevanceConfig } from './formdesign'
 let enumItems = {
   em_name1:
     [
@@ -56,7 +59,8 @@ let enumItems = {
     { evalue: '2', ename: '经办人兼任' },
     { evalue: '3', ename: '其它' },
 
-  ]
+  ],
+  em_name7: liquidation
 }
 export default [
   {
@@ -71,5 +75,29 @@ export default [
         data: enumItems[config.query.code]
       }
     }
-  }
+  },
+  {
+
+    url: '/api/formdesign/config',
+    type: 'get',
+    response: config => {
+      return {
+        code: 200,
+        data: {
+          resInitialValue,
+          formConfs,
+          formRelevanceConfig
+        }
+      }
+    }
+  },
+  {
+    url: '/customer/bankAccount/getBankList',
+    type: 'get',
+    response: config => {
+      return bankList
+    }
+  },
+
+
 ]

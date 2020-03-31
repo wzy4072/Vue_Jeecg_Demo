@@ -74,6 +74,14 @@ export default {
       return <tagName conf={this.conf} params={this.params} initialValue={this.initialValue} onchange={(v) => { this.$emit('change', v) }}></tagName>
     }
 
+    this.conf.rules && this.conf.rules.map(r => {
+      if (r.pattern) {
+        console.log(r)
+        // r.pattern = '/' + r.pattern.replace(/\*|\.|\?|\+|\$|\^|\||\\|\/|\[|\]|\(|\)|\{|\}/g, "\\$&") + '/'
+        // r.pattern = new RegExp(r.pattern.replace(/\*|\.|\?|\+|\$|\^|\||\\|\/|\[|\]|\(|\)|\{|\}/g, "\\$&"))
+      }
+    })
+
     if (['AsyncSelect', 'AddressCascader'].includes(this.conf.type)) {
       // params 目前只有 AddressCascader 请求时需要传递 financeNo
       let AnyNode = h(this.conf.type, {
@@ -82,7 +90,16 @@ export default {
           params: this.params
         },
         on: {
-          change: (v) => { this.$emit('change', { name: this.conf.name, value: v }) }
+          change: (v) => {
+            // let emitValue = {}
+            // if (Object.prototype.toString.call(v).slice(8, -1) === "Object" && v.type == 'AsyncSelect') {
+            //   emitValue = { name: this.conf.name, value: v.value, selectOption: v.selectOption }
+            // } else {
+            //   emitValue = { name: this.conf.name, value: v, }
+            // }
+            // console.log(emitValue)
+            this.$emit('change', { name: this.conf.name, value: v })
+          }
         },
         directives: [
           {

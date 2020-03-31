@@ -1,6 +1,6 @@
 <template>
   <a-row>
-    <a-col v-for="(col,index) in conf.columns" :key="index" :span="col.span">
+    <a-col v-for="(col,index) in conf.list" :key="index" :span="col.span">
       <renders
         v-for="(element,index) in col.list"
         :key="element.type + index"
@@ -24,7 +24,7 @@ export default {
   mounted() {},
   methods: {
     handleChangeVal(v, e) {
-      console.log('Grid', v, e);
+      // console.log('Grid', v, e);
       this.$emit('change', v)
     }
   }
