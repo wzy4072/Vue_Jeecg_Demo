@@ -60,7 +60,15 @@ let enumItems = {
     { evalue: '3', ename: '其它' },
 
   ],
-  em_name7: liquidation
+  em_name7: liquidation,
+
+  em_name8: [
+    { evalue: "1", ename: '直接或间接' },
+    { evalue: "2", ename: '通过人事、财务控制' },
+    { evalue: "3", ename: '高级管理人员' },
+    { evalue: "4", ename: '普通合伙人' },
+    { evalue: "5", ename: '其它' }
+  ]
 }
 export default [
   {
@@ -98,6 +106,15 @@ export default [
       return bankList
     }
   },
+  {
+    url: '/accountCenter/conductFinanceOpening/sendMobile',
+    type: 'get',
+    response: config => {
+      return { code: 200, message: '发送成功！' }
+    }
+  },
+
+
 
 
 ]

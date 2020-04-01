@@ -18,6 +18,7 @@ import AsyncSelect from "./components/AsyncSelect"; // 枚举下拉
 import AddressCascader from './components/AddressCascader'//省市区街级联
 import Grid from './components/Grid'
 import Tabs from './components/Tabs'
+import MobileVerifi from './components/MobileVerifi'
 const form_item = {
   title,
   hr,
@@ -56,7 +57,7 @@ const displayControl = (_self, sortableItem, name, value) => {
 
 export default {
   name: 'renders',
-  components: { AsyncSelect, AddressCascader, Grid, Tabs },
+  components: { AsyncSelect, AddressCascader, Grid, Tabs, MobileVerifi },
   render(h) {
     // 获取当前控件渲染
     const arr = (form_item[this.conf.type.toLowerCase()] && form_item[this.conf.type.toLowerCase()](this, h)) || [];
@@ -69,20 +70,17 @@ export default {
         trigger: this.conf.trigger || 'change'
       }
     };
+
     if (['grid', 'tabs'].includes(this.conf.type)) {
       const tagName = this.conf.type
       return <tagName conf={this.conf} params={this.params} initialValue={this.initialValue} onchange={(v) => { this.$emit('change', v) }}></tagName>
     }
 
-    this.conf.rules && this.conf.rules.map(r => {
-      if (r.pattern) {
-        console.log(r)
-        // r.pattern = '/' + r.pattern.replace(/\*|\.|\?|\+|\$|\^|\||\\|\/|\[|\]|\(|\)|\{|\}/g, "\\$&") + '/'
-        // r.pattern = new RegExp(r.pattern.replace(/\*|\.|\?|\+|\$|\^|\||\\|\/|\[|\]|\(|\)|\{|\}/g, "\\$&"))
-      }
-    })
+    // 正则处理
+    // r.pattern = '/' + r.pattern.replace(/\*|\.|\?|\+|\$|\^|\||\\|\/|\[|\]|\(|\)|\{|\}/g, "\\$&") + '/'
 
-    if (['AsyncSelect', 'AddressCascader'].includes(this.conf.type)) {
+
+    if (['AsyncSelect', 'AddressCascader', 'MobileVerifi'].includes(this.conf.type)) {
       // params 目前只有 AddressCascader 请求时需要传递 financeNo
       let AnyNode = h(this.conf.type, {
         props: {
@@ -112,6 +110,13 @@ export default {
         ]
       })
       return h("AFormItem", FormItem, [AnyNode])
+    }
+    if (['rawHTML'].includes(this.conf.type)) {
+      return h('div', {
+        domProps: {
+          innerHTML: this.conf.content
+        }
+      })
     }
     return h("AFormItem", FormItem, arr.concat(item_icon));
   },

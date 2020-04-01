@@ -5,7 +5,6 @@
       :label-col="{ span: 5 }"
       :wrapper-col="{ span: 12 }"
       ref="form"
-      @submit="handleSubmit"
       layout="horizontal"
     >
       <renders
@@ -19,12 +18,18 @@
         :params="params"
       ></renders>
 
-      <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
+      <!-- <a-form-item :wrapper-col="{ span: 12, offset: 5 }">
         <a-button type="primary" html-type="submit">Submit</a-button>
-      </a-form-item>
+      </a-form-item>-->
     </a-form>
+    <a-row>
+      <a-button style="margin-right: .8rem">取消</a-button>
+      <a-button style="margin-right: .8rem" type="primary" @click="handleSubmit(1)">暂存</a-button>
+      <a-button type="primary" @click="handleSubmit(2)">提交</a-button>
+      <a-button type="primary" @click="test">test</a-button>
+    </a-row>
+
     <!-- {{formConfs}} -->
-    <a-button type="primary" @click="test">test</a-button>
   </div>
 </template>
 
@@ -77,6 +82,7 @@ export default {
   },
   methods: {
     asyncGetValue() {
+      // 保存正则的过程中 正则中的\会被解析丢失
       getAction("/api/formdesign/config").then(res => {
         this.formConfs = res.data.formConfs;
         this.initialValue = transformData(

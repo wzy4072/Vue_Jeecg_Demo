@@ -60,7 +60,7 @@ export default {
       //   value: v,
       //   selectOption: node.data.props.option
       // });
-      // 抛出的值 要符合antd要求 抛出组件项目的值 
+      // 抛出的值 要符合antd要求 抛出组件项目的值
       this.$emit("change", v);
     },
     handleSearch(v) {
@@ -82,6 +82,10 @@ export default {
     },
     getEnumOptions() {
       ajaxGetEnumItems({ code: this.conf.selectOptionEnumCode }).then(res => {
+        if (!res.data) {
+          console.error("枚举：", this.conf.selectOptionEnumCode, "列表为空！");
+          res.data = [];
+        }
         // 选项是否特别多 是否支持搜索
         if (this.conf.showSearch) {
           this.backUpOptions = res.data;
@@ -154,10 +158,15 @@ export default {
       "ASelect",
       {
         props: {
+          placeholder:
+            conf.placeholder === undefined
+              ? "请选择" + conf.label
+              : conf.placeholder,
           showSearch: conf.showSearch,
           defaultValue: this.value,
           showArrow: conf.showArrow,
-          filterOption: false
+          filterOption: false,
+          allowClear: conf.allowClear
         },
         on: {
           search: this.handleSearch,

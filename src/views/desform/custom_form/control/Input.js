@@ -1,10 +1,9 @@
 export default (_self, h) => {
   let conf = _self.conf
-
   return [
     h('AInput', {
       props: {
-        placeholder: conf.placeholder,
+        placeholder: conf.placeholder === undefined ? ('请输入' + conf.label) : conf.placeholder,
         disabled: conf.disabled,
         allowClear: conf.allowClear
       },
