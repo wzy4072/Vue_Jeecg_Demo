@@ -3,14 +3,14 @@ import { liquidation } from './FormDesign2/liquidation.list'
 import bankList from './FormDesign2/bankList'
 import { resInitialValue, formConfs, formRelevanceConfig } from './formdesign'
 let enumItems = {
-  em_name1:
+  limbic_shbank_comDibilityLimit:
     [
       { ename: '少于15人', evalue: 'T' },
       { ename: '15-150人', evalue: 'S' },
       { ename: '150-2000人', evalue: 'M' },
       { ename: '2000人以上', evalue: 'L' },
     ],
-  em_name2: [
+    limbic_shbank_custType: [
     { evalue: '3000', ename: '国有企业-内资' },
     { evalue: '3010', ename: '集体企业-内资' },
     { evalue: '3011', ename: '城镇企业' },
@@ -45,29 +45,33 @@ let enumItems = {
     { evalue: '3203', ename: '外资企业' },
     { evalue: '3204', ename: '外商投资股份有限公司' },
   ],
-  em_name3: industry,
-  em_name4: [
+  limbic_shbank_industry	: industry,
+  limbic_shbank_depositHuman: [
     { evalue: '01', ename: '企业法人' },
     { evalue: '02', ename: '非企业法人' }
   ],
-  em_name5: [
+  limbic_shbank_appApplyType: [
     { evalue: '1', ename: '法人亲办' },
     { evalue: '2', ename: '授权经办' }
   ],
-  em_name6: [
+  limbic_shbank_cfoType: [
     { evalue: '1', ename: '法人兼任' },
     { evalue: '2', ename: '经办人兼任' },
     { evalue: '3', ename: '其它' },
 
   ],
-  em_name7: liquidation,
+  limbic_shbank_acctBank: liquidation,
 
-  em_name8: [
+  limbic_shbank_earningOwnerType: [
     { evalue: "1", ename: '直接或间接' },
     { evalue: "2", ename: '通过人事、财务控制' },
     { evalue: "3", ename: '高级管理人员' },
     { evalue: "4", ename: '普通合伙人' },
     { evalue: "5", ename: '其它' }
+  ],
+  limbic_shbank_earningOwnerIdType: [
+    { evalue: 'B', ename: '护照' },
+    { evalue: 'A', ename: '身份证' }
   ]
 }
 export default [

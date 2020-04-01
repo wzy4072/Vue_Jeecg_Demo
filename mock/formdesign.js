@@ -1,6 +1,10 @@
 let callBack1 = {
-    getParams: (v) => {
-        return { phone: v }
+    getParams: (v, p) => {
+        return {
+            mobile: v,
+            financeNo: p.fundSaleCertificateNo,
+            financeId: p.facilitatorId
+        }
     }
 
 }
@@ -152,7 +156,7 @@ export let formConfs = [
                                 disabled: true, // 是否禁用
                                 rules: [{ required: true, message: '请选择企业规模' }],
                                 selectOptionType: 2,
-                                selectOptionEnumCode: 'em_name1'
+                                selectOptionEnumCode: 'limbic_shbank_comDibilityLimit'
                             },
                             {
                                 type: 'AsyncSelect',
@@ -163,7 +167,7 @@ export let formConfs = [
                                 placeholder: '客户类别，无法确认则选择其他责任公司',
                                 rules: [{ required: true, message: '请选择客户类别' }],
                                 selectOptionType: 2,
-                                selectOptionEnumCode: 'em_name2'
+                                selectOptionEnumCode: 'limbic_shbank_custType'
                             },
                             {
                                 type: 'AsyncSelect',
@@ -173,7 +177,7 @@ export let formConfs = [
                                 disabled: true, // 是否禁用
                                 rules: [{ required: true, message: '请选择行业类别' }],
                                 selectOptionType: 2,
-                                selectOptionEnumCode: 'em_name3',
+                                selectOptionEnumCode: 'limbic_shbank_industry',
                                 showSearch: true, // select 搜索类型 第三种搜索类型
                                 showArrow: false // select 下拉小箭头 
                             },
@@ -184,7 +188,7 @@ export let formConfs = [
                                 config: false,
                                 disabled: true, // 是否禁用
                                 rules: [{ required: true, message: '请选择存款人类别' }],
-                                selectOptionEnumCode: 'em_name4'
+                                selectOptionEnumCode: 'limbic_shbank_depositHuman'
                             },
                             {
                                 type: 'AddressCascader', // 地区级联
@@ -366,7 +370,7 @@ export let formConfs = [
                                     disabled: false, // 是否禁用
                                     showSearch: true,
                                     rules: [{ required: true, message: '请选择绑定卡清算行行号' }],
-                                    selectOptionEnumCode: 'em_name7'
+                                    selectOptionEnumCode: 'limbic_shbank_acctBank'
                                 },
                                 {
                                     type: 'input',
@@ -409,7 +413,7 @@ export let formConfs = [
                                 disabled: true, // 是否禁用
                                 allowClear: true,
                                 rules: [{ required: true, message: '请选择受益所有人性质' }],
-                                selectOptionEnumCode: 'em_name8'
+                                selectOptionEnumCode: 'limbic_shbank_earningOwnerType'
                             },
                             {
                                 type: 'input',
@@ -450,16 +454,14 @@ export let formConfs = [
                                 rules: [{ required: true, message: '请输入受益所有人姓名' }],
                             },
                             {
-                                type: 'select',
+                                type: 'AsyncSelect',
                                 name: 'earningOwnerList[' + 1 + '].earningOwnerIdType',
                                 label: '受益所有人证件类型',
                                 config: false,
                                 disabled: true, // 是否禁用
+                                allowClear: true,
                                 rules: [{ required: true, message: '请输入受益所有人证件类型' }],
-                                options: [
-                                    { label: '身份证', value: 'A' },
-                                    { label: '护照', value: 'B' },
-                                ]
+                                selectOptionEnumCode: 'limbic_shbank_earningOwnerIdType'                            
                             },
                             {
                                 type: 'input',
@@ -501,7 +503,7 @@ export let formConfs = [
                             {
                                 type: 'MobileVerifi',
                                 name: 'corpMobile',
-                                label: '法人代表电话6666',
+                                label: '法人代表电话',
                                 config: false,
                                 rules: [{ required: true, message: '请输入法人代表电话' }],
                                 countOption:
@@ -602,7 +604,7 @@ export let formConfs = [
                                     config: false,
                                     placeholder: '办理类型',
                                     rules: [{ required: true, message: '请选择办理类型666' }],
-                                    selectOptionEnumCode: 'em_name5'
+                                    selectOptionEnumCode: 'limbic_shbank_appApplyType'
                                 },
                                 {
                                     type: 'input',
@@ -689,7 +691,7 @@ export let formConfs = [
                                     config: false,
                                     placeholder: '财务主管类型',
                                     rules: [{ required: true, message: '请选择财务主管类型666' }],
-                                    selectOptionEnumCode: 'em_name6'
+                                    selectOptionEnumCode: 'limbic_shbank_cfoType'
                                 },
                                 {
                                     type: 'input',

@@ -1,6 +1,6 @@
 <template>
   <a-row>
-    <a-col :span="20">
+    <a-col :span="12">
       <a-input
         v-model="phoneNumber"
         :placeholder="conf.placeholder === undefined ? ('请输入' + conf.label) : conf.placeholder"
@@ -8,7 +8,7 @@
         :allowClear="conf.allowClear"
       ></a-input>
     </a-col>
-    <a-col :span="4">
+    <a-col :span="10">
       <a-button
         type="primery"
         @click="countDown"
@@ -23,6 +23,7 @@
 
 <script>
 import { getAction } from "@/api/manage";
+import designUtil from "@/components/FormDesign/util";
 
 export default {
   props: {
@@ -34,6 +35,10 @@ export default {
       type: String,
       required: false,
       default: null
+    },
+    params: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -55,21 +60,19 @@ export default {
       //     console.error("手机号有误！");
       //     return;
       //   }
+      let callBacks = designUtil.parseFunJson(this.conf.countOption.callBack);
 
-      console.error("finaceOpenningDTO 业务：发送验证码时的参数");
+      // JSON.parse(this.conf.countOption.callBack, function(
+      //   k,
+      //   v
+      // ) {
+      //   if (v.indexOf && v.indexOf("function") > -1) {
+      //     return eval("(function(){return " + v + " })()");
+      //   }
+      //   return v;
+      // });
 
-      let callBacks = JSON.parse(this.conf.countOption.callBack, function(
-        k,
-        v
-      ) {
-        if (v.indexOf && v.indexOf("function") > -1) {
-          return eval("(function(){return " + v + " })()");
-        }
-
-        return v;
-      });
-
-      let param = callBacks.getParams(this.phoneNumber);
+      let param = callBacks.getParams(this.phoneNumber, this.params);
       getAction(this.conf.countOption.url, param).then(res => {
         if (res.code != 200) {
           this.$message.error(res.message);

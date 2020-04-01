@@ -225,7 +225,7 @@
 </template>
 <script>
 import draggable from "vuedraggable";
-import form_list from "./custom_form/FormList";
+import form_list from "@/components/FormDesign/FormList";
 // import TempRender from "./custom_form/tempRender";
 let uniId = 100;
 export default {

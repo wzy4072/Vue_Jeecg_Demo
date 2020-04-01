@@ -36,30 +36,7 @@
 <script>
 // import shBankConf from "./config01";
 import { getAction } from "@/api/manage";
-import moment from "moment";
-
-function transDate(dateValue, format) {
-  if (!dateValue) return null;
-  console.log("dateValue", dateValue);
-  return typeof dateValue === "string"
-    ? moment(dateValue, format)
-    : dateValue.format(format);
-}
-
-function transformData(confs, values) {
-  confs.map(conf => {
-    if (conf.hasOwnProperty("list")) {
-      values = transformData(conf.list, values);
-    } else {
-      // 处理日期字段格式 对象转字符串 字符串转对象
-      if (conf.type == "datepicker") {
-        let dateValue = values[conf.name];
-        values[conf.name] = transDate(dateValue, conf.dateValueFormat);
-      }
-    }
-  });
-  return values;
-}
+import designUtil from "@/components/FormDesign/util";
 
 //  法人亲办、法人兼任财务主管的情况，经办人以及财务主管身份证正反面影像资料文件名称非必输；
 //  法人亲办、他人兼任财务主管的情况，财务主管身份证正反面影像资料文件名称必输，经办人身份证正反面影像资料文件名称非必输；
@@ -73,7 +50,9 @@ export default {
       form: this.$form.createForm(this),
       initialValue: {},
       params: {
-        financeNo: "SHBankW2009901A"
+        financeNo: "SHBankW2009901A",
+        fundSaleCertificateNo: "888",
+        facilitatorId: "666"
       }
     };
   },
@@ -85,7 +64,7 @@ export default {
       // 保存正则的过程中 正则中的\会被解析丢失
       getAction("/api/formdesign/config").then(res => {
         this.formConfs = res.data.formConfs;
-        this.initialValue = transformData(
+        this.initialValue = designUtil.transformData(
           this.formConfs,
           res.data.resInitialValue
         );
@@ -93,11 +72,11 @@ export default {
       });
     },
     handleSubmit(e) {
-      e.preventDefault();
+      // e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
           // 处理日期字段格式
-          values = transformData(this.formConfs, values);
+          values = designUtil.transformData(this.formConfs, values);
           console.log("Received values of form: ", values);
         }
       });
