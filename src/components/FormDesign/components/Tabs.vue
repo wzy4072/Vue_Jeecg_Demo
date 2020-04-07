@@ -32,18 +32,24 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      activePanes:[]
+    }
   },
   mounted() {},
   methods: {
     handleChangeVal(v, e) {
-      this.$emit("change", v);
+      this.$emit('change', v)
     },
     tabChange(key) {
-      // console.log(key);
+      console.log('tabChange',key)
+      if(!this.activePanes.includes(key)){
+        this.activePanes.push(key)
+      }
+      this.$emit('change', { name: this.conf.name, value: key,activePanes:this.activePanes })
     }
   }
-};
+}
 </script>
 <style scoped>
 </style>

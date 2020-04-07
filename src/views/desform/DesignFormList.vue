@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <a-row :gutter="16">
+      <!-- {{form_list}} -->
       <a-col span="4">
         <a-card title="A区">
           <a-form :label-width="100">
@@ -11,15 +12,13 @@
                 :name="'flip-list'"
                 tag="div"
               >
-                <a-button
+                <div
                   v-for="(element,index) in form_list"
-                  :key="element.ele + index"
-                >{{element.ele}}</a-button>
-                <!-- <renders
-              
-                :ele="element.ele"
-                :obj="element.obj || {}"
-                ></renders>-->
+                  :key="element.type + index"
+                  class="form-li"
+                >
+                  <a-button>{{element.type}}</a-button>
+                </div>
               </transition-group>
             </draggable>
           </a-form>
@@ -44,18 +43,18 @@
                 tag="div"
               >
                 <renders
+                  v-for="(element,index) in sortable_item"
                   @handleRemoveEle="removeEle"
                   @handleConfEle="confEle"
                   @changeVisibility="changeVisibility"
-                  v-for="(element,index) in sortable_item"
-                  :key="element.ele + index"
+                  :key="element.type + index"
                   :index="index"
-                  :ele="element.ele"
-                  :obj="element.obj || {}"
-                  :initialValue="formData"
-                  @handleChangeVal="val => handleChangeVal(val,element)"
+                  :conf="element"
+                  :configIcon="true"
+                  :initialValue="initialValue"
+                  @change="val => handleChangeVal(val,element)"
                   :sortableItem="sortable_item"
-                  :config-icon="true"
+                  :params="params"
                 ></renders>
               </transition-group>
             </draggable>
@@ -200,7 +199,6 @@
         :wrapper-col="{ span: 12 }"
         @submit="handleSubmit"
       >
-   
         <!-- <template v-for="conf in tempConfs">
           <temp-render :conf="conf" :key="conf.name"></temp-render>
         </template>-->
@@ -230,13 +228,15 @@ import form_list from "@/components/FormDesign/FormList";
 let uniId = 100;
 export default {
   components: {
-    draggable,
+    draggable
     // TempRender
   },
   data() {
     return {
       form_list: form_list,
       sortable_item: [],
+      params: {},
+      initialValue: {},
       showModal: false,
       // 深拷贝对象，防止默认空对象被更改
       // 颜色选择器bug，对象下color不更新
@@ -299,16 +299,18 @@ export default {
     },
     // 控件回填数据
     handleChangeVal(val, element) {
-      this.$set(this.formData, element.obj.name, val);
+      console.log("DesignFormList", val);
+      // this.$set(this.formData, element.obj.name, val);
     },
     // https://github.com/SortableJS/Vue.Draggable#clone
     // 克隆,深拷贝对象
     cloneData(original) {
       // 添加一个modal标题
       let nConf = JSON.parse(JSON.stringify(original));
-      nConf.obj.modalTitle = nConf.obj.type;
+      nConf.modalTitle = nConf.type;
       uniId++;
-      nConf.obj.name = nConf.obj.type + uniId;
+      nConf.name = nConf.type + uniId;
+      nConf.label = nConf.label + uniId;
       return nConf;
     },
     // modal点击确定执行事件
@@ -365,7 +367,7 @@ export default {
     },
     // 更改当前渲染字段是否显示
     changeVisibility(index, visibility) {
-      this.$set(this.sortable_item[index].obj, "visibility", visibility);
+      // this.$set(this.sortable_item[index].obj, "visibility", visibility);
     }
   },
   watch: {
@@ -448,6 +450,13 @@ export default {
   }
 };
 </script>
+<style  scoped>
+.form-li:hover {
+  /* background-color: #ddd;
+  margin: 8px 0; */
+}
+</style>
+
 <style>
 .inline {
   display: inline-block;

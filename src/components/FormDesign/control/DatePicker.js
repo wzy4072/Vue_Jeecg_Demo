@@ -12,8 +12,6 @@ export default (_self, h) => {
       return current && current < moment().endOf('day')
     }
   }
-
-
   return [
     h('ADatePicker', {
       props: {
@@ -22,12 +20,14 @@ export default (_self, h) => {
         format: conf.dateFormat,
         // open:false
       },
+      on: {
+      },
       directives: [
         {
           name: "decorator",
           value: [
             conf.name,
-            { rules: conf.rules, initialValue: _self.initialValue[conf.name] }
+            { rules: conf.rules, initialValue: eval("_self.initialValue." + conf.name) }
           ]
         }
       ]

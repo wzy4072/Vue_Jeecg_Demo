@@ -3,6 +3,7 @@
     <a-col :span="12">
       <a-input
         v-model="phoneNumber"
+        @change="handleChange"
         :placeholder="conf.placeholder === undefined ? ('请输入' + conf.label) : conf.placeholder"
         :disabled="conf.disabled"
         :allowClear="conf.allowClear"
@@ -22,8 +23,8 @@
 </template>
 
 <script>
-import { getAction } from "@/api/manage";
-import designUtil from "@/components/FormDesign/util";
+import { getAction } from '@/api/manage'
+import designUtil from '@/components/FormDesign/util'
 
 export default {
   props: {
@@ -46,12 +47,15 @@ export default {
       phoneNumber: this.value,
       canClick: true,
       totalTime: this.conf.countOption.time
-    };
+    }
   },
   mounted() {},
   methods: {
+    handleChange(v, node) {
+      this.$emit('change', v)
+    },
     countDown() {
-      if (!this.canClick) return;
+      if (!this.canClick) return
       //   if (!this.phoneNumber) {
       //     console.error("请填写手机号！");
       //     return;
@@ -60,7 +64,7 @@ export default {
       //     console.error("手机号有误！");
       //     return;
       //   }
-      let callBacks = designUtil.parseFunJson(this.conf.countOption.callBack);
+      let callBacks = designUtil.parseFunJson(this.conf.countOption.callBack)
 
       // JSON.parse(this.conf.countOption.callBack, function(
       //   k,
@@ -72,26 +76,26 @@ export default {
       //   return v;
       // });
 
-      let param = callBacks.getParams(this.phoneNumber, this.params);
+      let param = callBacks.getParams(this.phoneNumber, this.params)
       getAction(this.conf.countOption.url, param).then(res => {
         if (res.code != 200) {
-          this.$message.error(res.message);
+          this.$message.error(res.message)
         } else {
-          this.$message.success("发送验证码成功！");
+          this.$message.success('发送验证码成功！')
         }
-      });
-      this.canClick = false;
+      })
+      this.canClick = false
       let clock = window.setInterval(() => {
-        this.totalTime--;
+        this.totalTime--
         if (this.totalTime == 0) {
-          window.clearInterval(clock);
-          this.totalTime = this.conf.countOption.time;
-          this.canClick = true; //这里重新开启
+          window.clearInterval(clock)
+          this.totalTime = this.conf.countOption.time
+          this.canClick = true //这里重新开启
         }
-      }, 1000);
+      }, 1000)
     }
   }
-};
+}
 </script>
 <style scoped>
 </style>

@@ -15,7 +15,7 @@ export default (_self, h) => {
           name: "decorator",
           value: [
             conf.name,
-            { rules: conf.rules || null, initialValue: _self.initialValue[conf.name] }
+            { rules: conf.rules || null, initialValue:  eval("_self.initialValue." + conf.name) }
           ]
         }
       ]

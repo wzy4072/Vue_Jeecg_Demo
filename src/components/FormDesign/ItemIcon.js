@@ -1,18 +1,17 @@
 export default (_self, h) => {
   let icons = [];
-  // 配置按钮
-  if (!!_self.obj.config) {
-    icons.push(h('AIcon', {
-      props: {
-        type: 'setting',
-      },
-      nativeOn: {
-        click() {
-          _self.$emit('handleConfEle', _self.index);
-        }
+
+  icons.push(h('AIcon', {
+    props: {
+      type: 'setting',
+    },
+    nativeOn: {
+      click() {
+        _self.$emit('handleConfEle', _self.index);
       }
-    }));
-  }
+    }
+  }));
+
   // 删除按钮
   icons.push(h('AIcon', {
     props: {

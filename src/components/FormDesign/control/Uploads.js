@@ -1,30 +1,30 @@
+function getUploadButton(_self, h) {
+  return h('AButton', {}, [h('AIcon', { props: { type: 'upload' } }), '上传'])
+}
+
+function getFileInfo(file) {
+  let fileInfo = {
+    uid: file.uid,
+    name: file.name,
+    status: file.status
+  }
+  if (file.response && file.response.code == 200 && file.response.data.id) {
+    fileInfo.response = { data: { id: file.response.data.id } }
+  }
+  return fileInfo;
+}
+function normFile(e) {
+  let fileList = Array.isArray(e) ? e : e.fileList
+
+  if (fileList.length > 0) {
+    return [getFileInfo(fileList[fileList.length - 1])]
+  }
+  return []
+
+}
+
 export default (_self, h) => {
-
-
-
-  function getUploadButton(_self, h) {
-    return h('AButton', {}, [h('AIcon', { props: { type: 'upload' } }), '上传'])
-  }
-
-  function getFileInfo(file) {
-    return {
-      uid: file.uid,
-      name: file.name,
-      status: file.status,
-      response: file.response
-    }
-  }
-
-
-
   let conf = _self.conf
-  function normFile(e) {
-    let fileList = Array.isArray(e) ? e : e.fileList
-    // return fileList;
-    // 只允许单个文件，替换动作
-    // 只保存文件ID信息 减少对象体积
-    return fileList.length > 0 ? [getFileInfo(fileList.slice(-1))] : []
-  }
   return [
     h('AUpload', {
       props: {
@@ -39,7 +39,7 @@ export default (_self, h) => {
             conf.name,
             {
               rules: conf.rules,
-              initialValue: _self.initialValue[conf.name],
+              initialValue: eval("_self.initialValue." + conf.name),
               valuePropName: 'fileList',
               getValueFromEvent: normFile,
             }

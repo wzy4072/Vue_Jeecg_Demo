@@ -28,8 +28,6 @@
       <a-button type="primary" @click="handleSubmit(2)">提交</a-button>
       <a-button type="primary" @click="test">test</a-button>
     </a-row>
-
-    <!-- {{formConfs}} -->
   </div>
 </template>
 

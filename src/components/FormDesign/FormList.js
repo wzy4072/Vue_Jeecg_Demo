@@ -16,20 +16,17 @@ const formList = {
   // title: titleConf,
   // hr: hrConf,
   // p: pConf,
-  select: selectConf,
+  // select: selectConf,
   // radio: radioConf,
   // checkbox: checkBoxConf,
   // datepicker: datePickerConf,
   // cascader: cascaderConf,
   // address: addressConf,
-  uploads: uploadsConf,
+  // uploads: uploadsConf,
   // text: textConf,
 };
 let list_arr = [];
 for (let i in formList) {
-  list_arr.push({
-    ele: i,
-    obj: formList[i]
-  });
+  list_arr.push(formList[i]);
 }
 export default list_arr;

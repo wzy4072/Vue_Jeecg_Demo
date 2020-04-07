@@ -18,74 +18,76 @@ callBack1 = JSON.stringify(callBack1, function (key, val) {
 const fileJson = JSON.stringify([{ uid: "666101", name: "法人身份证001.png", status: "done", response: { data: { id: "666101" } } }])
 
 export let resInitialValue = {
-    facilitatorName: '上海银行易精灵',
-    agreementType: 'A',
-    companyDesc: 'No English Name',
-    companyFoundDate: '2018-11-28',
-    confirmationDate: '2021-03-07',
-    agreementMoney: 2000000,
-    comDibilityLimit: 'S',
-    custType: '3011',
-    industry: 'A0110',
-    depositHuman: '01',
-    resDistList: ['440000000000', '440500000000', '440511000000', '440511002000'],
-    regStrentDoor: '汕头市',
-    companyName: '深圳市核心企业001',
-    agreementNumber: '123456789013345678',
-    companyImgID:
-        '[{"uid":"vc-upload-1585812128756-11","name":"001.png","status":"done","response":{"data":{"id":"37b7ec055d204744b94795749d763b5e"}}}]',
-    companyIdFromDate: '2018-05-09',
-    scopeOfBus: '房地产',
-    busAddress: '深圳市南山区',
-    regTePhone: '13212541254',
-    workDistList: ['440000000000', '440500000000', '440511000000', '440511003000'],
-    workStrentDoor: '汕头市海安街道',
-    workAddressPhone: '15212562365',
-    earningOwnerList: [
-        {
-            earningOwnerType: '1',
-            earningOwnerTypeName: '受益性质',
-            earningOwnerIdNo: '123',
-            earningOwnerLimitDate: '2099-01-01',
-            earningOwnerName: '李四',
-            earningOwnerIdType: 'A',
-            earningOwnerCountry: 'USA',
-            earningOwnerAddress: 'Americe'
-        }
+    facilitatorName: "上海银行",
+    companyName: "上海银行集团股份公司",
+    agreementType: "A",
+    agreementNumber: "91440400337919362H",
+    companyDesc: "No English Name",
+    companyImgID: fileJson,
+    companyFoundDate: "2020-03-20",
+    confirmationDate: "2020-03-21",
+    companyIdFromDate: "2020-03-22",
+    scopeOfBus: 666,
+    agreementMoney: 20,
+    comDibilityLimit: "T",
+    custType: "3012",
+    industry: "A0132",
+    depositHuman: "02",
+    resDistList: ["130000000000", "130600000000", "130604000000", "130604001000"],
+    AddressCascader: [
+        "130000000000",
+        "130600000000",
+        "130604000000",
+        "130604001000"
     ],
-    bankId: '966de301dc1e41608635f8351b26a0da',
-    account: '622401236589785',
-    bankPrefixName: '中国人民银行',
-    bankName: '中国银行股份有限公司深圳艺园路支行',
-    acctBank: '761290013606',
-    bankAcconame: '核心企业张三',
-    bankCode: '104584001080',
-    corpName: '张三',
-    corpMobile: '17603011822',
-    corpIdFromDate: '2019-02-28',
-    corpIdLimitDate: '2022-03-19',
-    legPerId: '125412541254125',
-    dynamicCode: '4521',
-    corpIdFrontImgID:
-        '[{"uid":"vc-upload-1585812128756-15","name":"002.png","status":"done","response":{"data":{"id":"1f75c85d76de4ee893869bdf9fff24e6"}}}]',
-    corpIdBackImgID:
-        '[{"uid":"vc-upload-1585812128756-17","name":"003.png","status":"done","response":{"data":{"id":"cc58cd20afcd461881658f37ae8459c2"}}}]',
-    appApplyType: '1',
-    cfoIdFromDate: '2005-01-01',
-    cfoIdLimitDate: '2099-12-31',
-    cfoType: '3',
-    checkerName: '经办人',
-    checkerIdCard: '452122233665251',
-    checkerMobile: '13645872365',
-    checkerIdFromDate: '2018-02-28',
-    checkerIdLimitDate: '2022-03-12',
-    checkerIdFrontImgID:
-        '[{"uid":"vc-upload-1585812128756-26","name":"004.png","status":"done","response":{"data":{"id":"9a34bccc156544ef80b60cde313aca30"}}}]',
-    checkerIdBackImgID:
-        '[{"uid":"vc-upload-1585812128756-28","name":"005.png","status":"done","response":{"data":{"id":"04f4416e462e4c3084b4daab80451b65"}}}]',
-    delegationImgID:
-        '[{"uid":"vc-upload-1585812128756-24","name":"004.png","status":"done","response":{"data":{"id":"62ec5cf2e1814ebb9d3a7fe97f0d7891"}}}]',
-    financeId: 'e6880ed9b7ee4cd0a5cb34c4e3137362'
+    regTePhone: "13212345678",
+    workDistList: [
+        "130000000000",
+        "130600000000",
+        "130604000000",
+        "130604001000"
+    ],
+    regStrentDoor: [
+        "130000000000",
+        "130600000000",
+        "130604000000",
+        "130604001000"
+    ],
+    appApplyType: "1",
+    cfoType: "1",
+
+    bankId: "c77fcb37ba654a79bab5769b3b4ec031",
+    acctBank: "313651099999",
+    account: "1",
+    bankPrefixName: "1",
+    bankName: "1",
+    bankAcconame: "1",
+    bankCode: "1",
+    earningOwnerList: [{
+        earningOwnerType: '1',
+        earningOwnerTypeName: '受益人性质666',
+        earningOwnerIdNo: '412744195005051234',
+        earningOwnerLimitDate: '2020-03-26',
+        earningOwnerName: '受益人张三',
+        earningOwnerIdType: 'B',
+        earningOwnerCountry: '中国',
+        earningOwnerAddress: '深圳市深圳湾人才公园',
+    }],
+
+    corpName: '法人金多多有限公司',
+    corpMobile: '18666668888',
+    corpIdFromDate: '2020-01-01',
+    corpIdLimitDate: '2030-01-01',
+    legPerId: '625455185001011234',
+    dynamicCode: '6666',
+    corpIdFrontImgID: fileJson,
+    corpIdBackImgID: fileJson,
+    cfoIdFrontImgID: fileJson,
+    cfoIdBackImgID: fileJson,
+    checkerIdFrontImgID: fileJson,
+    checkerIdBackImgID: fileJson,
+    delegationImgID: fileJson,
+
 };
 export let formConfs = [
     {

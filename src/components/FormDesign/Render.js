@@ -19,6 +19,8 @@ import AddressCascader from './components/AddressCascader'//省市区街级联
 import Grid from './components/Grid'
 import Tabs from './components/Tabs'
 import MobileVerifi from './components/MobileVerifi'
+import designUtil from '@/components/FormDesign/util'
+
 const form_item = {
   title,
   hr,
@@ -61,7 +63,7 @@ export default {
   render(h) {
     // 获取当前控件渲染
     const arr = (form_item[this.conf.type.toLowerCase()] && form_item[this.conf.type.toLowerCase()](this, h)) || [];
-    const item_icon = this.configIcon && this.conf.config ? ItemIcon(this, h) : [];
+    const item_icon = this.configIcon ? ItemIcon(this, h) : [];
     let FormItem = {
       props: {
         label: this.conf.label ? this.conf.label + '：' : '',
@@ -104,7 +106,7 @@ export default {
             name: "decorator",
             value: [
               this.conf.name,
-              { rules: this.conf.rules || [], initialValue: this.initialValue[this.conf.name] }
+              { rules: this.conf.rules || [], initialValue: eval("this.initialValue." + this.conf.name) }
             ]
           }
         ]
@@ -124,12 +126,14 @@ export default {
     // 当前控件的配置
     conf: {
       type: Object,
+      required: true,
       default() {
         return {};
       }
     },
     params: {
       type: Object,
+      required: true,
       default() {
         return {};
       }
