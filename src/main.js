@@ -41,7 +41,10 @@ import JDictSelectTag from './components/dict/index.js'
 import hasPermission from '@/utils/hasPermission'
 import vueBus from '@/utils/vueBus';
 import JeecgComponents from '@/components/jeecg/index'
-
+import Dragcell from "@views/DraggableTest/cells/Dragcell";
+import DesignCell from "@views/DraggableTest/FD_Component/DesignCell";
+import draggable from "vuedraggable";
+import renders from '@/components/FormDesign/Render'
 Vue.config.productionTip = false
 Vue.use(FormDesign);
 
@@ -57,6 +60,10 @@ Vue.component('apexchart', VueApexCharts)
 Vue.use(preview)
 Vue.use(vueBus);
 Vue.use(JeecgComponents);
+Vue.component("Dragcell", Dragcell);
+Vue.component("DesignCell", DesignCell);
+Vue.component("draggable", draggable);
+Vue.component("renders", renders);
 
 new Vue({
   router,

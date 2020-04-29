@@ -1,3 +1,4 @@
+import designUtil from '@/components/FormDesign/util'
 export default (_self, h) => {
   let conf = _self.conf
   return [
@@ -15,7 +16,7 @@ export default (_self, h) => {
           name: "decorator",
           value: [
             conf.name,
-            { rules: conf.rules || null, initialValue:  eval("_self.initialValue." + conf.name) }
+            { rules: conf.rules || null, initialValue: designUtil.deepKey(_self.initialValue, conf.name) }
           ]
         }
       ]

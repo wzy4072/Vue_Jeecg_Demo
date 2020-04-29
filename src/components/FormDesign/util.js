@@ -102,13 +102,15 @@ export default {
      * 
      */
     getRules: function (conf) {
+        conf.rules = conf.rules || []
         if (conf.required) {
             let msgHeads = {
                 input: '请输入',
                 select: "请选择",
                 AsyncSelect: '请选择'
             }
-            let requireRule = { require: true, message: msgHeads[conf.type] + conf.label }
+            let requireRule = { required: true, message: msgHeads[conf.type] + conf.label }
+
             return [requireRule, ...conf.rules]
         }
     }

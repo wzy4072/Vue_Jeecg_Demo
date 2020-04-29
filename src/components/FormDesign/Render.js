@@ -1,6 +1,7 @@
 import ItemIcon from './ItemIcon';
 import input from './control/Input';
 import number from './control/Number';
+import switchs from './control/Switch';
 import checkbox from './control/CheckBox';
 import radio from './control/Radio';
 import select from './control/Select';
@@ -26,6 +27,7 @@ const form_item = {
   hr,
   p,
   input,
+  switchs,
   number,
   select,
   radio,
@@ -63,7 +65,7 @@ export default {
   render(h) {
     // 获取当前控件渲染
     const arr = (form_item[this.conf.type.toLowerCase()] && form_item[this.conf.type.toLowerCase()](this, h)) || [];
-    const item_icon = this.configIcon ? ItemIcon(this, h) : [];
+    // const item_icon = this.configIcon ? ItemIcon(this, h) : [];
     let FormItem = {
       props: {
         label: this.conf.label ? this.conf.label + '：' : '',
@@ -120,7 +122,7 @@ export default {
         }
       })
     }
-    return h("AFormItem", FormItem, arr.concat(item_icon));
+    return h("AFormItem", FormItem, arr);
   },
   props: {
     // 当前控件的配置

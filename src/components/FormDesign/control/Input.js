@@ -3,8 +3,6 @@ import designUtil from '@/components/FormDesign/util'
 
 export default (_self, h) => {
   let conf = _self.conf
-
-
   return [
     h('AInput', {
       props: {
