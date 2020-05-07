@@ -16,13 +16,23 @@
       :params="params"
     ></renders>
     <a-button type="primary" @click="handleSaveItem">保存</a-button>
-
   </a-form>
 </template>
 
 <script>
 import common from '@/utils/common'
-
+export let AsyncSelectConf = {
+  type: 'AsyncSelect',
+  icon: 'dictionary',
+  name: '',
+  label: '字典Select',
+  disabled: true, // 是否禁用
+  rules: [],
+  selectOptionType: 2, // 字典选项目
+  selectOptionEnumCode: 'limbic_shbank_comDibilityLimit',
+  labelCol: { span: 6 },
+  wrapperCol: { span: 12 },
+}
 export default {
   props: {
     propData: {
@@ -44,7 +54,6 @@ export default {
           type: 'input',
           label: '标题',
           name: 'label',
-          disabled: false,
           required: false,
           rules: [],
           labelCol: { span: 6 },
@@ -54,7 +63,6 @@ export default {
           type: 'input',
           label: '字段名',
           name: 'name',
-          disabled: false,
           required: true,
           rules: [],
           labelCol: { span: 6 },
@@ -64,7 +72,6 @@ export default {
           type: 'number',
           label: '标题宽',
           name: 'labelCol.span',
-          disabled: false,
           required: false,
           rules: [],
           labelCol: { span: 6 },
@@ -74,27 +81,16 @@ export default {
           type: 'number',
           label: '表单宽',
           name: 'wrapperCol.span',
-          disabled: false,
           required: false,
           rules: [],
           labelCol: { span: 6 },
           wrapperCol: { span: 12 },
         },
         {
-          type: 'switchs',
-          name: 'required',
-          label: '是否必填',
-          disabled: false,
-          rules: [],
-          labelCol: { span: 6 },
-          wrapperCol: { span: 12 },
-        },
-        {
-          type: 'switchs',
-          name: 'disabled',
-          label: '是否禁用',
-          disabled: false,
-          rules: [],
+          type: 'input',
+          label: '字典code',
+          name: 'selectOptionEnumCode',
+          required: true,
           labelCol: { span: 6 },
           wrapperCol: { span: 12 },
         },
@@ -124,5 +120,3 @@ export default {
   },
 }
 </script>
-
-<style></style>

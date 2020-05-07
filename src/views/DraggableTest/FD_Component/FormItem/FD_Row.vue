@@ -2,7 +2,7 @@
   <a-row>
     <a-col
       v-for="(item, i) in itemConf.list"
-      :key="item.key + i"
+      :key="item.key"
       :span="item.span"
       :style="{ width: getWidth(item) }"
       class="conf-cell cell-col"
@@ -11,8 +11,8 @@
     >
       <draggable :list="item.list" :group="{ name: 'form-design' }">
         <DesignCell
-          v-for="(ChildItem, j) in item.list"
-          :key="j"
+          v-for="(ChildItem) in item.list"
+          :key="ChildItem.key"
           :itemConf="ChildItem"
         ></DesignCell>
       </draggable>
@@ -46,8 +46,8 @@ export default {
         'formDesign/updateActiveForm',
         common.deepClone(itemConf)
       )
-      console.log('activeCell:key', itemConf.key)
-    },
+    //   console.log('activeCell:key', itemConf.key)
+    }
   },
 }
 </script>

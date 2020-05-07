@@ -17,7 +17,7 @@
       >
         <div class="cell" v-for="(item, i) in base.list" :key="i">
           <p class="left">
-            <span :class="`iconfont icon-${item.icon}`"></span>
+            <svg-icon :iconClass="'icon-' + item.icon"></svg-icon>
           </p>
           <p class="right">{{ item.label }}</p>
         </div>
@@ -35,7 +35,7 @@
       >
         <div class="cell" v-for="(item, i) in layout.list" :key="i">
           <p class="left">
-            <span :class="`iconfont icon-${item.icon}`"></span>
+            <svg-icon :iconClass="'icon-' + item.icon"></svg-icon>
           </p>
           <p class="right">{{ item.label }}</p>
         </div>
@@ -66,10 +66,11 @@
         :list="elseItem.list"
         :group="{ name: 'form-design', pull: 'clone', put: false }"
         @change="log"
+        :clone="clone"
       >
         <div class="cell" v-for="(item, i) in elseItem.list" :key="i">
           <p class="left">
-            <span :class="`iconfont icon-${item.icon}`"></span>
+            <svg-icon :iconClass="'icon-' + item.icon"></svg-icon>
           </p>
           <p class="right">{{ item.label }}</p>
         </div>
@@ -82,6 +83,15 @@
 <script>
 import draggable from 'vuedraggable'
 import common from '@/utils/common'
+
+import { InputConf } from '@/views/DraggableTest/FD_Component/DesignItem/InputForm'
+import { NumberConf } from '@/views/DraggableTest/FD_Component/DesignItem/NumberForm'
+import { DatePickerConf } from '@/views/DraggableTest/FD_Component/DesignItem/DatePickerForm'
+import { SelectConf } from '@/views/DraggableTest/FD_Component/DesignItem/SelectForm'
+import { TitleConf } from '@/views/DraggableTest/FD_Component/DesignItem/TitleForm'
+import { AsyncSelectConf } from '@/views/DraggableTest/FD_Component/DesignItem/AsyncSelectForm'
+import { GridConf } from '@/views/DraggableTest/FD_Component/DesignItem/GridForm'
+
 export default {
   components: {
     draggable,
@@ -90,119 +100,19 @@ export default {
     return {
       base: {
         label: '基础字段',
-        list: [
-          {
-            type: 'input',
-            name: '',
-            label: 'Input',
-            disabled: false,
-            required: true,
-            rules: [],
-            labelCol: { span: 6 },
-            wrapperCol: { span: 6 },
-          },
-          {
-            type: 'number',
-            label: '数字',
-            name: '',
-            min: 0,
-            rules: [],
-          },
-
-          {
-            type: 'select',
-            // 三种下拉选择
-            name: '',
-            label: '下拉选择',
-            labelCol: { span: 6 },
-            wrapperCol: { span: 6 },
-            options: [],
-          },
-          {
-            type: 'datepicker',
-            label: '日期选择',
-            name: '',
-            disabledDate: '',
-            dateFormat: 'YYYY-MM-DD',
-            dateValueFormat: 'YYYY-MM-DD',
-            config: false,
-            rules: [],
-          },
-          {
-            type: 'title',
-            name: '',
-            label: '展示值',
-            labelCol: { span: 6 },
-            wrapperCol: { span: 6 },
-          },
-        ],
+        list: [InputConf, NumberConf, SelectConf, DatePickerConf, TitleConf],
       },
       layout: {
         label: '布局字段',
-        list: [
-          {
-            label: '栅格布局',
-            type: 'grid',
-            icon: 'ai211',
-            name: '',
-            key: '',
-            list: [
-              {
-                span: 12,
-                type: 'col',
-                icon: 'ai211',
-                name: '',
-                key: '',
-                list: [
-                  {
-                    type: 'input',
-                    name: '',
-                    label: 'Input',
-                    disabled: false,
-                    required: true,
-                    rules: [],
-                    labelCol: { span: 6 }, // FormItem 默认 { span: 6 },
-                    wrapperCol: { span: 6 }, // FormItem 默认{ span: 6 },
-                  },
-                ],
-              },
-              {
-                span: 12,
-                type: 'col',
-                icon: 'ai211',
-                name: '',
-                key: '',
-                list: [
-                  {
-                    type: 'input',
-                    name: '',
-                    label: 'Input',
-                    disabled: false,
-                    required: true,
-                    rules: [],
-                    labelCol: { span: 6 }, // FormItem 默认 { span: 6 },
-                    wrapperCol: { span: 6 }, // FormItem 默认{ span: 6 },
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+        list: [GridConf],
       },
       elseItem: {
         label: '特殊字段',
         list: [
+          AsyncSelectConf,
           {
             type: 'AsyncSelect',
-            name: '',
-            label: '字典下拉类型',
-            disabled: true, // 是否禁用
-            rules: [],
-            selectOptionType: 2, // 字典选项目
-            selectOptionEnumCode: 'limbic_shbank_comDibilityLimit',
-          },
-          {
-            type: 'AsyncSelect',
+            icon: 'sync',
             name: 'bankId',
             label: '远程获取下拉',
             disabled: false, // 是否禁用
@@ -239,6 +149,7 @@ export default {
         item.key = common.getGuid() // 任意项 不可重复 复制的也不能重复
         return item
       })
+    //   console.log('666',JSON.stringify(newOri[0]))
       return newOri[0]
     },
     initMenu() {

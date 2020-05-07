@@ -40,11 +40,9 @@
 <script>
 import common from '@/utils/common'
 // import FDGridPanel from '@/components/form-design/FDGridPanel'
-// import bus from '@/utils/bus'
-import fdinput from './FormItem/FD_Input'
 import fdtitle from './FormItem/FD_Title'
-import fdselect from './FormItem/FD_Select'
 import fdrow from './FormItem/FD_Row'
+
 function recurrence(list, key) {
   if (!list || list.length === 0) return []
   let nList = []
@@ -61,6 +59,9 @@ export default {
     fdtitle: fdtitle,
     fdinput: fdtitle,
     fdselect: fdtitle,
+    fdnumber: fdtitle,
+    fddatepicker: fdtitle,
+    fdAsyncSelect: fdtitle,
   },
   props: {
     formAttr: {

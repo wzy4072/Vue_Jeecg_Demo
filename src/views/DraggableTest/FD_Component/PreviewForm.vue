@@ -28,8 +28,7 @@ export default {
       form: this.$form.createForm(this),
       formConfs:[],
       initialValue: {
-        name: 'Tom',
-        age: 12,
+          title:'深圳市某某公司2011212151'
       },
       params: {},
       visible: false,

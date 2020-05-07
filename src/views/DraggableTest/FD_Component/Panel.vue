@@ -28,8 +28,6 @@
 <script>
 import draggable from 'vuedraggable'
 import common from '@/utils/common'
-// import DesignCell from './DesignCell.vue'
-// import bus from '@/utils/bus'
 
 export default {
   props: {
