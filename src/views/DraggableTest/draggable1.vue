@@ -29,10 +29,55 @@
           >
         </a-row> -->
         <a-row>
-          <DesInput
+          <InputForm
             v-show="$store.state.formDesign.showType === 'input'"
             :propData="$store.state.formDesign.activeForm"
-          ></DesInput>
+          ></InputForm>
+          <NumberForm
+            v-show="$store.state.formDesign.showType === 'number'"
+            :propData="$store.state.formDesign.activeForm"
+          ></NumberForm>
+          <DatePickerForm
+            v-show="$store.state.formDesign.showType === 'datepicker'"
+            :propData="$store.state.formDesign.activeForm"
+          ></DatePickerForm>
+
+          <SelectForm
+            v-show="$store.state.formDesign.showType === 'select'"
+            :propData="$store.state.formDesign.activeForm"
+          ></SelectForm>
+
+          <TitleForm
+            v-show="$store.state.formDesign.showType === 'title'"
+            :propData="$store.state.formDesign.activeForm"
+          ></TitleForm>
+          <AsyncSelectForm
+            v-show="$store.state.formDesign.showType === 'AsyncSelect'"
+            :propData="$store.state.formDesign.activeForm"
+          ></AsyncSelectForm>
+
+          <EnumSelectForm
+            v-show="$store.state.formDesign.showType === 'EnumSelect'"
+            :propData="$store.state.formDesign.activeForm"
+          ></EnumSelectForm>
+
+          <GridForm
+            v-show="$store.state.formDesign.showType === 'grid'"
+            :propData="$store.state.formDesign.activeForm"
+          ></GridForm>
+
+          <UploadsForm
+            v-show="$store.state.formDesign.showType === 'uploads'"
+            :propData="$store.state.formDesign.activeForm"
+          ></UploadsForm>
+
+          <AddressCascaderForm
+            v-show="$store.state.formDesign.showType === 'AddressCascader'"
+            :propData="$store.state.formDesign.activeForm"
+          ></AddressCascaderForm>
+
+    
+
         </a-row>
       </a-col>
     </a-row>
@@ -49,15 +94,33 @@ import Panel from './FD_Component/Panel'
 // 渲染弹窗
 import PreviewForm from './FD_Component/PreviewForm'
 import common from '@/utils/common'
-import DesInput from '@/views/DraggableTest/FD_Component/DesignItem/DesInput'
+import InputForm from '@/views/DraggableTest/FD_Component/DesignItem/InputForm'
+import NumberForm from '@/views/DraggableTest/FD_Component/DesignItem/NumberForm'
+import DatePickerForm from '@/views/DraggableTest/FD_Component/DesignItem/DatePickerForm'
+import SelectForm from '@/views/DraggableTest/FD_Component/DesignItem/SelectForm'
+import TitleForm from '@/views/DraggableTest/FD_Component/DesignItem/TitleForm'
+import AsyncSelectForm from '@/views/DraggableTest/FD_Component/DesignItem/AsyncSelectForm'
+import EnumSelectForm from '@/views/DraggableTest/FD_Component/DesignItem/EnumSelectForm'
+import GridForm from '@/views/DraggableTest/FD_Component/DesignItem/GridForm'
+import UploadsForm from '@/views/DraggableTest/FD_Component/DesignItem/UploadsForm'
+import AddressCascaderForm from '@/views/DraggableTest/FD_Component/DesignItem/AddressCascaderForm'
 
 // let uId = 0
 export default {
   components: {
     FDMenu,
     Panel,
-    DesInput,
+    InputForm,
+    NumberForm,
     PreviewForm,
+    DatePickerForm,
+    SelectForm,
+    TitleForm,
+    AsyncSelectForm,
+    EnumSelectForm,
+    GridForm,
+    UploadsForm,
+    AddressCascaderForm
   },
   data() {
     return {
@@ -81,6 +144,7 @@ export default {
   methods: {
     openPreviewDialog() {
       let newFormList = common.deepClone(this.$store.state.formDesign.formList)
+
       this.$refs.PreviewForm.openModale(newFormList)
     },
   },
@@ -88,7 +152,7 @@ export default {
 </script>
 
 <style>
-.fdesing-page {
+#fdesing-page {
   background: #fff;
   padding: 16px;
 }
@@ -101,11 +165,7 @@ export default {
   min-height: 200px;
   border: 1px solid #ccc;
 }
-.t-align-r {
-  text-align: right;
-  padding-right: 6px;
-  line-height: 32px;
-}
+
 .conf-cell {
   border: 1px dashed #ccc;
   padding: 3px;

@@ -45,6 +45,8 @@ import Dragcell from "@views/DraggableTest/cells/Dragcell";
 import DesignCell from "@views/DraggableTest/FD_Component/DesignCell";
 import draggable from "vuedraggable";
 import renders from '@/components/FormDesign/Render'
+import './icons'
+
 Vue.config.productionTip = false
 Vue.use(FormDesign);
 

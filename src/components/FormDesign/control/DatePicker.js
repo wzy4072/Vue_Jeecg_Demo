@@ -1,3 +1,4 @@
+import designUtil from '@/components/FormDesign/util'
 import moment from 'moment';
 export default (_self, h) => {
   let conf = _self.conf
@@ -27,7 +28,7 @@ export default (_self, h) => {
           name: "decorator",
           value: [
             conf.name,
-            { rules: conf.rules, initialValue: eval("_self.initialValue." + conf.name) }
+            { rules: conf.rules, initialValue:  designUtil.deepKey(_self.initialValue, conf.name) }
           ]
         }
       ]

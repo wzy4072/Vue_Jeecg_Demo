@@ -62,6 +62,9 @@ export default {
     fdnumber: fdtitle,
     fddatepicker: fdtitle,
     fdAsyncSelect: fdtitle,
+    fduploads: fdtitle,
+    fdAddressCascader:fdtitle,
+    fdEnumSelect: fdtitle
   },
   props: {
     formAttr: {

@@ -8,6 +8,8 @@ import { getAction, postAction } from '@/api/manage'
  * 1_1 option数量较多时，应设置showSearch，默认不展示任何选项，只有输入关键词，展示相近的最多15个选项
  * 1_2 option数量不多时，不设置showSearch, 全部选项将渲染
  *
+ * 2 后台查询option
+ * 2_1 option较少时， 全部展示
  *
  */
 export default {
@@ -27,12 +29,27 @@ export default {
       options: [],
       backUpOptions: [],
       fetching: false,
+      //   selectType: null
     }
   },
   created() {},
   mounted() {
+    // 1 枚举类型
+    this.getEnumOptions()
+    // 判断类型
+    // { value: '402361018886', label: '安徽省农村信用社联合社资金清算中心（不转汇）' },
+
+    // if (this.conf.selectOptionEnumCode) {
+    //   this.selectType = "enum";
+    // }
     // 2 普通url请求类型
-    this.getUrlOptions()
+    // if (
+    //   Object.prototype.toString.call(this.conf.options).slice(8, -1) ===
+    //   "Object"
+    // ) {
+    //   this.selectType = "url";
+    //   this.getUrlOptions();
+    // }
   },
   methods: {
     handleChange(v, node) {
@@ -89,34 +106,32 @@ export default {
      * callBack 接收res 需返回list
      *
      */
-    getUrlOptions() {
-      let { conf } = this
-      let action =
-        conf.options.method && conf.options.method.toUpperCase() === 'POST'
-          ? postAction
-          : getAction
-      action(conf.options.url, {}).then((res) => {
-        if (conf.options.callBack) {
-          this.options = conf.options.callBack(res)
-        } else {
-          if (res.code == 200) {
-            this.options = res.data
-          } else {
-            this.$message.error('选择候选项获取失败！')
-          }
-        }
-      })
-    },
+    // getUrlOptions() {
+    //   let { conf } = this;
+    //   let action =
+    //     conf.options.method && conf.options.method.toUpperCase() === "POST"
+    //       ? postAction
+    //       : getAction;
+    //   action(conf.options.url, {}).then(res => {
+    //     if (conf.options.callBack) {
+    //       this.options = conf.options.callBack(res);
+    //     } else {
+    //       if (res.code == 200) {
+    //         this.options = res.data;
+    //       } else {
+    //         this.$message.error("选择候选项获取失败！");
+    //       }
+    //     }
+    //   });
+    // }
   },
   render(h) {
     let { conf, options } = this
     function renderOptions() {
-      let labelKeys  = (conf.options.labelKeys || 'label').split(';')
-      console.warn('有改动 请更改原配置文件')
-      let valueKey = conf.options.valueKey || 'id'
- 
+    //   let labelKeys = ['ename']
+      let valueKey = 'evalue'
       return options.map((option) => {
-        const labelArr = labelKeys.map((labelKey) => option[labelKey])
+        // const labelArr = labelKeys.map((labelKey) => option[labelKey])
         return h(
           'aSelectOption',
           {
@@ -125,7 +140,8 @@ export default {
               option: option,
             },
           },
-          labelArr.join('')
+          option.ename
+        //   labelArr.join('')
         )
       })
     }
@@ -146,12 +162,11 @@ export default {
         on: {
           search: this.handleSearch,
           change: this.handleChange,
-          // select: this.handleChange
         },
       },
       renderOptions()
     )
-  }
+  },
 }
 </script>
 <style scoped></style>

@@ -97,6 +97,18 @@ let getUserPermissionByToken = {
             },
             "name": "DesignPreview",
             "id": "c3b050978256957869d860d066bf4050"
+          },
+          {
+            "path": "/desform/DraggableTest",
+            "component": "DraggableTest/draggable1",
+            "route": "1",
+            "meta": {
+              "keepAlive": true,
+              "internalOrExternal": false,
+              "title": "拖拽实验"
+            },
+            "name": "DraggableTest",
+            "id": "c3b050978256957869d860d066bf4051"
           }
         ],
         "meta": {
@@ -147,6 +159,37 @@ let getUserPermissionByToken = {
         },
         "name": "task",
         "id": "baf16b7174bd821b6bab23fa9abb200d"
+      },
+
+
+      {
+        "redirect": null,
+        "path": "/splunk",
+        "component": "layouts/RouteView",
+        "route": "1",
+        "name": "splunk0512",
+        "id": "splunk0512",
+        "children": [
+          {
+            "path": "/splunk/login",
+            "component": "Splunk/login",
+            "route": "1",
+            "meta": {
+              "keepAlive": false,
+              "internalOrExternal": false,
+              "title": "登录"
+            },
+            "name": "splunk0512login",
+            "id": "splunk0512login"
+          },
+     
+        ],
+        "meta": {
+          "keepAlive": false,
+          "internalOrExternal": false,
+          "icon": "share-alt",
+          "title": "Splunk"
+        }       
       },
       {
         "redirect": null, "path": "/message", "component": "layouts/RouteView", "route": "1",

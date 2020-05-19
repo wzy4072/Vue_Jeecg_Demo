@@ -15,7 +15,7 @@ export default (_self, h) => {
           name: "decorator",
           value: [
             conf.name,
-            { rules: designUtil.getRules(conf), initialValue: eval("_self.initialValue." + conf.name) }
+            { rules: designUtil.getRules(conf), initialValue: designUtil.deepKey(_self.initialValue, conf.name)}
           ]
         }
       ]

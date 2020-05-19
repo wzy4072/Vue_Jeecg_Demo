@@ -42,24 +42,7 @@
       </draggable>
     </a-row>
     <br />
-
-    <a-divider>高级字段</a-divider>
-    <a-row>
-      <!-- <draggable
-        :list="senior.list"
-        :group="{ name: 'form-design', pull: 'clone', put: false }"
-        @change="log"
-      >
-        <div class="cell" v-for="(item, i) in senior.list" :key="i">
-          <p class="left">
-            <span :class="`iconfont icon-${item.icon}`"></span>
-          </p>
-          <p class="right">{{ item.label }}</p>
-        </div>
-      </draggable> -->
-    </a-row>
-    <br />
-
+    
     <a-divider>特殊类型</a-divider>
     <a-row>
       <draggable
@@ -75,8 +58,9 @@
           <p class="right">{{ item.label }}</p>
         </div>
       </draggable>
-    </a-row>
-    <br />
+    </a-row> 
+    <br /> 
+  
   </a-row>
 </template>
 
@@ -90,7 +74,10 @@ import { DatePickerConf } from '@/views/DraggableTest/FD_Component/DesignItem/Da
 import { SelectConf } from '@/views/DraggableTest/FD_Component/DesignItem/SelectForm'
 import { TitleConf } from '@/views/DraggableTest/FD_Component/DesignItem/TitleForm'
 import { AsyncSelectConf } from '@/views/DraggableTest/FD_Component/DesignItem/AsyncSelectForm'
+import { EnumSelectConf } from '@/views/DraggableTest/FD_Component/DesignItem/EnumSelectForm'
 import { GridConf } from '@/views/DraggableTest/FD_Component/DesignItem/GridForm'
+import { UploadsConf } from '@/views/DraggableTest/FD_Component/DesignItem/UploadsForm'
+import { AddressCascaderConf } from '@/views/DraggableTest/FD_Component/DesignItem/AddressCascaderForm'
 
 export default {
   components: {
@@ -100,7 +87,8 @@ export default {
     return {
       base: {
         label: '基础字段',
-        list: [InputConf, NumberConf, SelectConf, DatePickerConf, TitleConf],
+        list: [InputConf, NumberConf, SelectConf,  AsyncSelectConf, DatePickerConf, TitleConf, UploadsConf],
+        // switch title 待添加
       },
       layout: {
         label: '布局字段',
@@ -109,25 +97,10 @@ export default {
       elseItem: {
         label: '特殊字段',
         list: [
-          AsyncSelectConf,
-          {
-            type: 'AsyncSelect',
-            icon: 'sync',
-            name: 'bankId',
-            label: '远程获取下拉',
-            disabled: false, // 是否禁用
-            rules: [],
-            selectOptionType: 1,
-            showSearch: true,
-            options: {
-              url: '/customer/bankAccount/getBankList',
-              callBack: (res) => {
-                return res.data
-              },
-              valueKey: 'id',
-              labelKeys: ['bankAcco', 'bankAcconame'],
-            },
-          },
+          // 地区级联
+          EnumSelectConf,
+          AddressCascaderConf,
+          // 枚举Select
         ],
       },
     }

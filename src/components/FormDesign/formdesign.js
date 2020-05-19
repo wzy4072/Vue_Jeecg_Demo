@@ -167,40 +167,37 @@ export let formConfs = [
                                 rules: [{ required: true, message: '请输入企业注册资本' }],
                             },
                             {
-                                type: 'AsyncSelect',
+                                type: 'EnumSelect',
                                 name: 'comDibilityLimit',
                                 label: '企业规模',
                                 config: false,
                                 disabled: true, // 是否禁用
                                 rules: [{ required: true, message: '请选择企业规模' }],
-                                selectOptionType: 2,
                                 selectOptionEnumCode: 'limbic_shbank_comDibilityLimit'
                             },
                             {
-                                type: 'AsyncSelect',
+                                type: 'EnumSelect',
                                 name: 'custType',
                                 label: '客户类别',
                                 config: false,
                                 disabled: true, // 是否禁用
                                 placeholder: '客户类别，无法确认则选择其他责任公司',
                                 rules: [{ required: true, message: '请选择客户类别' }],
-                                selectOptionType: 2,
                                 selectOptionEnumCode: 'limbic_shbank_custType'
                             },
                             {
-                                type: 'AsyncSelect',
+                                type: 'EnumSelect',
                                 name: 'industry',
                                 label: '行业类别',
                                 config: false,
                                 disabled: true, // 是否禁用
                                 rules: [{ required: true, message: '请选择行业类别' }],
-                                selectOptionType: 2,
                                 selectOptionEnumCode: 'limbic_shbank_industry',
                                 showSearch: true, // select 搜索类型 第三种搜索类型
                                 showArrow: false // select 下拉小箭头 
                             },
                             {
-                                type: 'AsyncSelect',
+                                type: 'EnumSelect',
                                 name: 'depositHuman',
                                 label: '存款人类别',
                                 config: false,
@@ -343,13 +340,12 @@ export let formConfs = [
                                     config: false,
                                     disabled: false, // 是否禁用
                                     rules: [{ required: true, message: '必填' }],
-                                    selectOptionType: 1,
                                     showSearch: true,
                                     options: {
                                         url: '/customer/bankAccount/getBankList',
                                         callBack: (res) => { return res.data },
                                         valueKey: 'id',
-                                        labelKeys: ['bankAcco', 'bankAcconame']
+                                        labelKeys: 'bankAcco;bankAcconame'
                                     }
                                 },
                                 {
@@ -383,7 +379,7 @@ export let formConfs = [
                             "span": 12,
                             "list": [
                                 {
-                                    type: 'AsyncSelect',
+                                    type: 'EnumSelect',
                                     name: 'acctBank',
                                     label: '绑定卡清算行行号',
                                     config: false,
@@ -426,7 +422,7 @@ export let formConfs = [
                         "span": 12,
                         "list": [
                             {
-                                type: 'AsyncSelect',
+                                type: 'EnumSelect',
                                 name: 'earningOwnerList[' + 0 + '].earningOwnerType',
                                 label: '受益所有人性质',
                                 config: false,
@@ -472,7 +468,7 @@ export let formConfs = [
                                 rules: [{ required: true, message: '请输入受益所有人姓名' }],
                             },
                             {
-                                type: 'AsyncSelect',
+                                type: 'EnumSelect',
                                 name: 'earningOwnerList[' + 0 + '].earningOwnerIdType',
                                 label: '受益所有人证件类型',
                                 config: false,
@@ -616,7 +612,7 @@ export let formConfs = [
                             "span": 12,
                             "list": [
                                 {
-                                    type: 'AsyncSelect',
+                                    type: 'EnumSelect',
                                     name: 'appApplyType',
                                     label: '办理类型',
                                     config: false,
@@ -703,7 +699,7 @@ export let formConfs = [
                             "span": 12,
                             "list": [
                                 {
-                                    type: 'AsyncSelect',
+                                    type: 'EnumSelect',
                                     name: 'cfoType',
                                     label: '财务主管类型',
                                     config: false,

@@ -17,30 +17,23 @@
     ></renders>
     <a-button type="primary" @click="handleSaveItem">保存</a-button>
   </a-form>
-  <!-- <div>propData{{ propData }}</div> -->
 </template>
 
 <script>
 import common from '@/utils/common'
-export let AsyncSelectConf = {
-  type: 'AsyncSelect',
-  icon: 'dictionary',
+// 专用组件 后台有接口配合
+export let AddressCascaderConf = {
+  type: 'AddressCascader',
+  icon: 'input',
   name: '',
-  label: 'urlSelect',
-  disabled: true, // 是否禁用
+  label: '地区级联',
+  disabled: false,
+  required: true,
   rules: [],
-  showSearch: true,
-  options: {
-    url: '/customer/bankAccount/getBankList',
-    callBack: (res) => {
-      return res.data
-    },
-    valueKey: 'id',
-    labelKeys: 'bankAcco;bankAcconame',
-  },
   labelCol: { span: 6 },
   wrapperCol: { span: 12 },
 }
+
 export default {
   props: {
     propData: {
@@ -54,6 +47,14 @@ export default {
       },
     },
   },
+  watch: {
+    propData: {
+      handler: function() {
+        this.form.setFieldsValue(this.propData)
+      },
+      deep: true,
+    },
+  },
   data() {
     return {
       form: this.$form.createForm(this),
@@ -62,6 +63,7 @@ export default {
           type: 'input',
           label: '标题',
           name: 'label',
+          disabled: false,
           required: false,
           rules: [],
           labelCol: { span: 6 },
@@ -71,52 +73,17 @@ export default {
           type: 'input',
           label: '字段名',
           name: 'name',
+          disabled: false,
           required: true,
           rules: [],
           labelCol: { span: 6 },
           wrapperCol: { span: 12 },
         },
-        {
-          type: 'input',
-          label: 'url',
-          name: 'options.url',
-          required: true,
-          rules: [],
-          labelCol: { span: 6 },
-          wrapperCol: { span: 12 },
-        },
-        {
-          type: 'input',
-          label: 'valueKey',
-          name: 'options.valueKey',
-          required: true,
-          rules: [],
-          labelCol: { span: 6 },
-          wrapperCol: { span: 12 },
-        },
-        {
-          type: 'input',
-          label: 'labelKeys',
-          name: 'options.labelKeys',
-          required: true,
-          rules: [],
-          labelCol: { span: 6 },
-          wrapperCol: { span: 12 },
-        },
-        {
-          type: 'input',
-          label: 'callBack',
-          name: 'options.callBack',
-          required: false,
-          rules: [],
-          labelCol: { span: 6 },
-          wrapperCol: { span: 12 },
-        },
-
         {
           type: 'number',
           label: '标题宽',
           name: 'labelCol.span',
+          disabled: false,
           required: false,
           rules: [],
           labelCol: { span: 6 },
@@ -126,7 +93,26 @@ export default {
           type: 'number',
           label: '表单宽',
           name: 'wrapperCol.span',
+          disabled: false,
           required: false,
+          rules: [],
+          labelCol: { span: 6 },
+          wrapperCol: { span: 12 },
+        },
+        {
+          type: 'switchs',
+          name: 'required',
+          label: '是否必填',
+          disabled: false,
+          rules: [],
+          labelCol: { span: 6 },
+          wrapperCol: { span: 12 },
+        },
+        {
+          type: 'switchs',
+          name: 'disabled',
+          label: '是否禁用',
+          disabled: false,
           rules: [],
           labelCol: { span: 6 },
           wrapperCol: { span: 12 },
@@ -143,7 +129,6 @@ export default {
           let newFormList = common.deepClone(
             this.$store.state.formDesign.formList
           )
-          console.log('这里需要将callback字符串 转换为对象')
           newFormList = common.recurrence(newFormList, (item) => {
             if (item.key === this.$store.state.formDesign.activeKey) {
               return Object.assign({}, item, values)
